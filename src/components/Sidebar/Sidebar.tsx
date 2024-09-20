@@ -13,7 +13,7 @@ const SideBar = () => {
     setAnchorEl(null)
   }
   return (
-    <Card className='card h-screen flex felx-col justify-between py-5'>
+    <Card className='card h-screen flex flex-col justify-between py-5 fixed pr-20'>
       <div className='space-y-8 pl-7'>
         <div className=''>
           <span className='logo text-xl font-bold'>Your Hometown</span>
