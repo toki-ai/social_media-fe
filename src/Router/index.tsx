@@ -5,6 +5,8 @@ import Profile from '../components/Profile/Profile'
 import Homepage from '../pages/Homepage/Homepage'
 import Authentication from '../pages/Authentication/Authentication'
 import AppLayout from '../layout/AppLayout'
+import PaymentPage from '../pages/PaymentPage'
+import BookingConfirm from '../pages/BookingConfirm'
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,8 @@ const router = createBrowserRouter([
   },
   { path: '/login', element: <Authentication /> },
   { path: '/register', element: <Authentication /> },
+  { path: '/payment', element: <PaymentPage /> },
+  { path: '/booking-confirm', element: <BookingConfirm /> },
 ])
 
 export default router
