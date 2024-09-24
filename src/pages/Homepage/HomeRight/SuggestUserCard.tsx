@@ -1,20 +1,28 @@
-import { Avatar, Button, CardHeader } from "@mui/material";
-import { red } from "@mui/material/colors";
+import { Avatar, Button, CardHeader } from '@mui/material'
+import { red } from '@mui/material/colors'
 
-const SuggestUserCard = () => {
+interface SuggestUserCardProps {
+  title?: string
+  subheader?: string
+}
+
+const SuggestUserCard: React.FC<SuggestUserCardProps> = ({
+  title,
+  subheader,
+}) => {
   return (
     <CardHeader
-      sx={{ padding: "5px" }}
+      sx={{ padding: '5px' }}
       avatar={
-        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+        <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
           R
         </Avatar>
       }
-      action={<Button size="small">Follow</Button>}
-      title="Shrimp and Chorizo Paella"
-      subheader="September 14, 2016"
+      action={<Button size='small'>Follow</Button>}
+      title={title}
+      subheader={subheader}
     />
-  );
-};
+  )
+}
 
-export default SuggestUserCard;
+export default SuggestUserCard

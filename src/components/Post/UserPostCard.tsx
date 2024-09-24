@@ -1,4 +1,5 @@
 import React from 'react'
+import { Card, CardMedia } from '@mui/material'
 
 interface UserPostCardProps {
   src: string
@@ -6,9 +7,14 @@ interface UserPostCardProps {
 
 const UserPostCard: React.FC<UserPostCardProps> = ({ src }) => {
   return (
-    <div className='w-full aspect-square cursor-pointer'>
-      <img src={src} alt='' className='object-cover w-full h-full' />
-    </div>
+    <Card sx={{ width: '100%', aspectRatio: '1 / 1', cursor: 'pointer' }}>
+      <CardMedia
+        component='img'
+        src={src}
+        alt=''
+        sx={{ objectFit: 'cover', height: '100%' }}
+      />
+    </Card>
   )
 }
 

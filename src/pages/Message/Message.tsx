@@ -1,7 +1,11 @@
-import React from 'react'
+import { Box, Typography } from '@mui/material'
 
 const Message = () => {
-  return <div></div>
+  return (
+    <Box>
+      <Typography variant='h5'>Message</Typography>
+    </Box>
+  )
 }
 
 export default Message

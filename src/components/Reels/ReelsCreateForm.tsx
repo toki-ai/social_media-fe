@@ -1,7 +1,7 @@
-import React from "react";
+import { Box } from '@mui/material'
 
 const ReelCreateForm = () => {
-  return <div>create reel form</div>;
-};
+  return <Box>create reel form</Box>
+}
 
-export default ReelCreateForm;
+export default ReelCreateForm

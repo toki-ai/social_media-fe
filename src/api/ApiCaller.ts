@@ -1,6 +1,10 @@
-import axios, { InternalAxiosRequestConfig, AxiosResponse, AxiosHeaders } from 'axios'
+import axios, {
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+  AxiosHeaders,
+} from 'axios'
 
-const baseURL = import.meta.env.VITE_API_BASE_URL
+const baseURL = import.meta.env.VITE_API_URL
 
 const api = axios.create({
   baseURL: baseURL,
@@ -21,10 +25,13 @@ api.interceptors.request.use(
 )
 
 api.interceptors.response.use(
-  (response: AxiosResponse) => response,
+  (response: AxiosResponse) => {
+    console.log('Response: ', response)
+    return response
+  },
   (error) => {
     if (error.response && error.response.status === 401) {
-      window.location.href = '/login' 
+      window.location.href = '/login'
     }
     return Promise.reject(error)
   }

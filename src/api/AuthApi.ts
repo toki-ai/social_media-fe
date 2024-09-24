@@ -3,24 +3,38 @@ import { LoginData, RegisterData } from '../interface/UserInterface'
 
 const apiUrl = import.meta.env.VITE_API_URL
 
-export const signIn = async (signIn: LoginData) => {
+export const signIn = async (signInData: LoginData): Promise<void> => {
   try {
-    const { data } = await axios.post(`${apiUrl}/auth/signin`, signIn)
+    const { data } = await axios.post<{ token?: string }>(
+      `${apiUrl}/auth/signin`,
+      signInData
+    )
     if (data.token) {
       localStorage.setItem('jwt', data.token)
     }
   } catch (error) {
-    console.log('Error: ', error)
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error: ', error.response?.data || error.message)
+    } else {
+      console.error('Error: ', error)
+    }
   }
 }
 
-export const signUp = async (signUp: RegisterData) => {
+export const signUp = async (signUpData: RegisterData): Promise<void> => {
   try {
-    const { data } = await axios.post(`${apiUrl}/auth/signup`, signUp)
+    const { data } = await axios.post<{ token?: string }>(
+      `${apiUrl}/auth/signup`,
+      signUpData
+    )
     if (data.token) {
       localStorage.setItem('jwt', data.token)
     }
   } catch (error) {
-    console.log('Error: ', error)
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error: ', error.response?.data || error.message)
+    } else {
+      console.error('Error: ', error)
+    }
   }
 }

@@ -1,31 +1,32 @@
-import { Card, Grid2 } from '@mui/material'
+import { Card, Grid, Typography } from '@mui/material'
 import backgroundImage from '/assets/sceen.jpg'
 import Login from './Login'
 import Register from './Register'
+import { useLocation } from 'react-router-dom'
 
 const Authentication = () => {
+  const location = useLocation()
+
   return (
-    <div>
-      <Grid2 container className='w-screen'>
-        <Grid2 size={7} className='h-screen overflow-hidden'>
-          <img
-            className='h-full w-full object-cover'
-            src={backgroundImage}
-            alt='background'
-          />
-        </Grid2>
-        <Grid2 size={5} className='h-screen overflow-hidden'>
-          <div className='px-20 flex flex-col justify-center h-full'>
-            <Card className='card p-8'>
-              <div className='flex flex-col items-center mb-5 space-y-1'>
-                <h1 className='log'>Your Hometown</h1>
-                {location.pathname === '/register' ? <Register /> : <Login />}
-              </div>
-            </Card>
-          </div>
-        </Grid2>
-      </Grid2>
-    </div>
+    <Grid container sx={{ height: '100vh' }}>
+      <Grid
+        item
+        xs={7}
+        sx={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      ></Grid>
+      <Grid item xs={5} container alignItems='center' justifyContent='center'>
+        <Card sx={{ padding: 4, width: '80%' }}>
+          <Typography variant='h4' align='center' gutterBottom>
+            Your Hometown
+          </Typography>
+          {location.pathname === '/register' ? <Register /> : <Login />}
+        </Card>
+      </Grid>
+    </Grid>
   )
 }
 

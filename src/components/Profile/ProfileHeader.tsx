@@ -1,92 +1,99 @@
-import { Avatar, Button } from '@mui/material'
+import { Avatar, Button, Box, Typography } from '@mui/material'
 
 const ProfileHeader = () => {
+  const isEditMode = true
+
   return (
-    <div className='inline-block w-full'>
-      <div className='flex'>
-        <div className='w-[30%]'>
-          <div className='px-5 flex justify-between items-start mt-5 h-[5rem]'>
-            <Avatar
-              sx={{ width: '10rem', height: '10rem' }}
-              src='https://i.pinimg.com/280x280_RS/b4/19/fd/b419fd337d42a639bba952a351f22d73.jpg'
-            />
-          </div>
-        </div>
-        <div className='w-[70%]'>
-          <div className='flex'>
-            <span>toki._.ai</span>
-            {true ? (
-              <div>
-                <Button
-                  variant='contained'
-                  size='small'
-                  sx={{
-                    backgroundColor: 'lightgrey',
-                    color: 'black',
-                    marginLeft: '10px',
-                    boxShadow: 'none',
-                    textTransform: 'none',
-                  }}
-                >
-                  Edit profile
-                </Button>
-                <Button
-                  variant='contained'
-                  size='small'
-                  sx={{
-                    backgroundColor: 'lightgrey',
-                    color: 'black',
-                    marginLeft: '10px',
-                    boxShadow: 'none',
-                    textTransform: 'none',
-                  }}
-                >
-                  View achive
-                </Button>
-              </div>
-            ) : (
-              <div>
-                <Button
-                  variant='contained'
-                  size='small'
-                  sx={{
-                    backgroundColor: 'lightgrey',
-                    color: 'black',
-                    marginLeft: '10px',
-                    boxShadow: 'none',
-                    textTransform: 'none',
-                  }}
-                >
-                  Following
-                </Button>
-                <Button
-                  variant='contained'
-                  size='small'
-                  sx={{
-                    backgroundColor: 'lightgrey',
-                    color: 'black',
-                    marginLeft: '10px',
-                    boxShadow: 'none',
-                    textTransform: 'none',
-                  }}
-                >
-                  Message
-                </Button>
-              </div>
-            )}
-          </div>
-          <div className='flex justify-between w-[50%]'>
-            <span>5 posts</span>
-            <span>83 followers</span>
-            <span>213 following</span>
-          </div>
-          <div>
-            <p>En Deo 🍊</p>
-            <p>Don't let fear stop you from playing the game♟️✨</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Box display='flex' width='100%' mt={5}>
+      <Box
+        width='30%'
+        display='flex'
+        justifyContent='center'
+        alignItems='flex-start'
+      >
+        <Avatar
+          sx={{ width: '10rem', height: '10rem' }}
+          src='https://i.pinimg.com/280x280_RS/b4/19/fd/b419fd337d42a639bba952a351f22d73.jpg'
+        />
+      </Box>
+      <Box width='70%' pl={2}>
+        <Box display='flex' alignItems='center'>
+          <Typography variant='h6' component='span'>
+            toki._.ai
+          </Typography>
+          {isEditMode ? (
+            <Box ml={2}>
+              <Button
+                variant='contained'
+                size='small'
+                sx={{
+                  backgroundColor: 'lightgrey',
+                  color: 'black',
+                  boxShadow: 'none',
+                  textTransform: 'none',
+                  marginLeft: '10px',
+                }}
+              >
+                Edit profile
+              </Button>
+              <Button
+                variant='contained'
+                size='small'
+                sx={{
+                  backgroundColor: 'lightgrey',
+                  color: 'black',
+                  boxShadow: 'none',
+                  textTransform: 'none',
+                  marginLeft: '10px',
+                }}
+              >
+                View archive
+              </Button>
+            </Box>
+          ) : (
+            <Box ml={2}>
+              <Button
+                variant='contained'
+                size='small'
+                sx={{
+                  backgroundColor: 'lightgrey',
+                  color: 'black',
+                  boxShadow: 'none',
+                  textTransform: 'none',
+                  marginLeft: '10px',
+                }}
+              >
+                Following
+              </Button>
+              <Button
+                variant='contained'
+                size='small'
+                sx={{
+                  backgroundColor: 'lightgrey',
+                  color: 'black',
+                  boxShadow: 'none',
+                  textTransform: 'none',
+                  marginLeft: '10px',
+                }}
+              >
+                Message
+              </Button>
+            </Box>
+          )}
+        </Box>
+        <Box display='flex' justifyContent='space-between' width='50%' mt={1}>
+          <Typography variant='body2'>5 posts</Typography>
+          <Typography variant='body2'>83 followers</Typography>
+          <Typography variant='body2'>213 following</Typography>
+        </Box>
+        <Box mt={1}>
+          <Typography variant='body1'>En Deo 🍊</Typography>
+          <Typography variant='body2'>
+            Don't let fear stop you from playing the game♟️✨
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

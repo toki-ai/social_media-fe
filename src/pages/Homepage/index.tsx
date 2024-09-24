@@ -1,6 +1,7 @@
 import { Grid, Box } from '@mui/material'
-import HomeRight from './components/HomeRight/HomeRight'
-import MiddlePart from './components/MiddlePart/MiddlePart'
+import MiddlePart from './MiddlePart/MiddlePart'
+import HomeRight from './HomeRight/HomeRight'
+
 
 const Homepage: React.FC = () => {
   return (

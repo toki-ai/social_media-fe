@@ -1,7 +1,7 @@
-import React from "react";
+import { Box } from '@mui/material'
 
 const Reel = () => {
-  return <div>Reel</div>;
-};
+  return <Box>Reel</Box>
+}
 
-export default Reel;
+export default Reel

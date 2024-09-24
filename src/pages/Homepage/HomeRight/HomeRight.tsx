@@ -1,10 +1,11 @@
+import React from 'react'
 import SearchUser from '../../../components/Search/SearchUser'
 import SuggestUserCard from './SuggestUserCard'
 import { Card, Typography, Box } from '@mui/material'
 
 const popularUsers: number[] = [1, 2, 3, 4, 5]
 
-const HomeRight = () => {
+const HomeRight: React.FC = () => {
   return (
     <Box sx={{ paddingRight: 5 }}>
       <SearchUser />
@@ -32,7 +33,7 @@ const HomeRight = () => {
         </Box>
         <Box sx={{ marginTop: 1 }}>
           {popularUsers.map((userId) => (
-            <SuggestUserCard key={userId} />
+            <SuggestUserCard key={userId} title='Title' subheader='subheader' />
           ))}
         </Box>
       </Card>
