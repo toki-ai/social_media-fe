@@ -4,25 +4,17 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Typography,
+  Box,
 } from '@mui/material'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
-import { registerUserAction } from '../../redux/auth/auth.action'
-import { ThunkDispatch } from 'redux-thunk'
-import { AnyAction } from 'redux'
 import { useNavigate } from 'react-router-dom'
+import { RegisterData } from '../../interface/UserInterface'
+import { signUp } from '../../api/AuthApi'
 
-interface FormValues {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-  gender: string
-}
-
-const initialValues: FormValues = {
+const initialValues: RegisterData = {
   firstName: '',
   lastName: '',
   email: '',
@@ -33,26 +25,36 @@ const initialValues: FormValues = {
 const validationSchema = Yup.object({
   firstName: Yup.string().required('First name is required'),
   lastName: Yup.string().required('Last name is required'),
-  email: Yup.string().email().required('Email is required'),
+  email: Yup.string()
+    .email('Invalid email format')
+    .required('Email is required'),
   password: Yup.string()
     .required('Password is required')
-    .min(6, 'Password is too short'),
+    .min(6, 'Password must be at least 6 characters long'),
 })
 
 const Register = () => {
   const [gender, setGender] = useState('')
-  const dispatch: ThunkDispatch<unknown, unknown, AnyAction> = useDispatch()
-  const handleSubmit = (values: FormValues) => {
-    values.gender = gender
-    dispatch(registerUserAction(values))
-    console.log('Register successful', values)
-    navigate('/')
-  }
-
   const navigate = useNavigate()
 
+  const handleSubmit = (values: RegisterData) => {
+    values.gender = gender
+    signUp(values)
+      .then(() => {
+        console.log('Register successful', values)
+        navigate('/')
+      })
+      .catch((error) => {
+        console.error('Registration failed', error)
+        // Xử lý lỗi nếu cần
+      })
+  }
+
   return (
-    <div>
+    <Box sx={{ maxWidth: 400, margin: 'auto', padding: 2 }}>
+      <Typography variant='h5' component='h1' gutterBottom>
+        Register
+      </Typography>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -60,63 +62,68 @@ const Register = () => {
       >
         {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <div>
+            <Box sx={{ mb: 2 }}>
               <Field
                 as={TextField}
                 name='firstName'
                 placeholder='First Name'
                 variant='outlined'
                 fullWidth
+                label='First Name'
               />
               <ErrorMessage
                 name='firstName'
-                component={'div'}
+                component='div'
                 className='text-red-500'
               />
-            </div>
-            <div>
+            </Box>
+            <Box sx={{ mb: 2 }}>
               <Field
                 as={TextField}
                 name='lastName'
                 placeholder='Last Name'
                 variant='outlined'
                 fullWidth
+                label='Last Name'
               />
               <ErrorMessage
                 name='lastName'
-                component={'div'}
+                component='div'
                 className='text-red-500'
               />
-            </div>
-            <div>
+            </Box>
+            <Box sx={{ mb: 2 }}>
               <Field
                 as={TextField}
                 name='email'
                 placeholder='Email'
                 variant='outlined'
                 fullWidth
+                label='Email'
               />
               <ErrorMessage
                 name='email'
-                component={'div'}
+                component='div'
                 className='text-red-500'
               />
-            </div>
-            <div>
+            </Box>
+            <Box sx={{ mb: 2 }}>
               <Field
                 as={TextField}
                 name='password'
                 placeholder='Password'
                 variant='outlined'
                 fullWidth
+                type='password'
+                label='Password'
               />
               <ErrorMessage
                 name='password'
-                component={'div'}
+                component='div'
                 className='text-red-500'
               />
-            </div>
-            <div>
+            </Box>
+            <Box sx={{ mb: 2 }}>
               <RadioGroup
                 aria-labelledby='gender'
                 value={gender}
@@ -135,15 +142,15 @@ const Register = () => {
                   label='Male'
                 />
               </RadioGroup>
-            </div>
-            <Button type='submit' variant='contained'>
+            </Box>
+            <Button type='submit' variant='contained' color='primary' fullWidth>
               Register
             </Button>
           </Form>
         )}
       </Formik>
-      <div className='pt-5 flex justify-center items-center gap-2'>
-        <p>Have account yet ?</p>
+      <Box className='pt-5 flex justify-center items-center gap-2'>
+        <Typography>Have an account?</Typography>
         <Button
           variant='text'
           color='primary'
@@ -153,8 +160,8 @@ const Register = () => {
         >
           Login
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

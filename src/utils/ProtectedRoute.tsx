@@ -5,7 +5,6 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const isAuthenticated = !!localStorage.getItem('jwt')
-
   return isAuthenticated ? <>{children}</> : <Navigate to='/login' />
 }
 

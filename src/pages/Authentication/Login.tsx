@@ -1,16 +1,9 @@
-import { Button, TextField } from '@mui/material'
+import { Button, TextField, Typography, Box } from '@mui/material'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
-import { loginUserAction } from '../../redux/auth/auth.action'
-import { AnyAction } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
 import { useNavigate } from 'react-router-dom'
-
-interface FormValues {
-  email: string
-  password: string
-}
+import { signIn } from '../../api/AuthApi'
+import { LoginData } from '../../interface/UserInterface'
 
 const initialValues = {
   email: '',
@@ -25,16 +18,23 @@ const validationSchema = Yup.object({
 })
 
 const Login = () => {
-  const dispatch = useDispatch<ThunkDispatch<unknown, unknown, AnyAction>>()
-  const handleSubmit = (values: FormValues) => {
-    dispatch(loginUserAction(values))
-    console.log('Login successful', values)
-    navigate('/')
-  }
   const navigate = useNavigate()
 
+  const handleSubmit = async (values: LoginData) => {
+    try {
+      await signIn(values)
+      console.log('Login successful', values)
+      navigate('/')
+    } catch (error) {
+      console.error('Login failed', error)
+    }
+  }
+
   return (
-    <div>
+    <Box sx={{ maxWidth: 400, margin: 'auto', padding: 2 }}>
+      <Typography variant='h5' component='h1' gutterBottom>
+        Login
+      </Typography>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -42,7 +42,7 @@ const Login = () => {
       >
         {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <div className='space-y-5'>
+            <Box className='space-y-5'>
               <Field
                 as={TextField}
                 name='email'
@@ -50,14 +50,15 @@ const Login = () => {
                 type='email'
                 variant='outlined'
                 fullWidth
+                label='Email'
               />
               <ErrorMessage
                 name='email'
-                component={'div'}
+                component='div'
                 className='text-red-500'
               />
-            </div>
-            <div className='space-y-5'>
+            </Box>
+            <Box className='space-y-5'>
               <Field
                 as={TextField}
                 name='password'
@@ -65,13 +66,14 @@ const Login = () => {
                 type='password'
                 variant='outlined'
                 fullWidth
+                label='Password'
               />
               <ErrorMessage
                 name='password'
-                component={'div'}
+                component='div'
                 className='text-red-500'
               />
-            </div>
+            </Box>
             <Button
               sx={{ padding: '0.8rem 0rem' }}
               fullWidth
@@ -84,8 +86,8 @@ const Login = () => {
           </Form>
         )}
       </Formik>
-      <div className='pt-5 flex justify-center items-center gap-2'>
-        <p>Don't have an account?</p>
+      <Box className='pt-5 flex justify-center items-center gap-2'>
+        <Typography>Don't have an account?</Typography>
         <Button
           variant='text'
           color='primary'
@@ -95,8 +97,8 @@ const Login = () => {
         >
           Register
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

@@ -1,19 +1,23 @@
-import { Grid } from '@mui/material'
+import { Grid, Box } from '@mui/material'
 import HomeRight from './components/HomeRight/HomeRight'
 import MiddlePart from './components/MiddlePart/MiddlePart'
 
-const Homepage = () => {
+const Homepage: React.FC = () => {
   return (
-    <div className='w-full'>
+    <Box width='100%'>
       <Grid container>
-        <Grid item lg={8} className='px-5 flex justify-center'>
+        <Grid
+          item
+          lg={8}
+          sx={{ px: 5, display: 'flex', justifyContent: 'center' }}
+        >
           <MiddlePart />
         </Grid>
         <Grid item lg={4}>
           <HomeRight />
         </Grid>
       </Grid>
-    </div>
+    </Box>
   )
 }
 
