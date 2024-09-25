@@ -1,9 +1,22 @@
 import { Avatar, Button, Box, Typography } from '@mui/material'
 import { UserProfile } from '../../interface/UserInterface'
+import { useState } from 'react'
+import EditProfileModal from '../../components/EditProfileModal/EditProfileModal'
 
-const ProfileHeader: React.FC<{ user: UserProfile }> = ({ user }) => {
-  const isEditMode = true
+const ProfileHeader: React.FC<{
+  user: UserProfile
+  postNumber: number
+  isEditMode: boolean
+}> = ({ user, postNumber, isEditMode }) => {
+  const [open, setOpen] = useState(false)
 
+  const handleOpenModal = () => {
+    setOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setOpen(false)
+  }
   return (
     <Box display='flex' width='100%' mt={5}>
       <Box
@@ -34,9 +47,15 @@ const ProfileHeader: React.FC<{ user: UserProfile }> = ({ user }) => {
                   textTransform: 'none',
                   marginLeft: '10px',
                 }}
+                onClick={handleOpenModal}
               >
                 Edit profile
               </Button>
+              <EditProfileModal
+                open={open}
+                handleClose={handleCloseModal}
+                user={user}
+              />
               <Button
                 variant='contained'
                 size='small'
@@ -83,9 +102,13 @@ const ProfileHeader: React.FC<{ user: UserProfile }> = ({ user }) => {
           )}
         </Box>
         <Box display='flex' justifyContent='space-between' width='50%' mt={1}>
-          <Typography variant='body2'>5 posts</Typography>
-          <Typography variant='body2'>83 followers</Typography>
-          <Typography variant='body2'>213 following</Typography>
+          <Typography variant='body2'>{postNumber} posts</Typography>
+          <Typography variant='body2'>
+            {user.followers.length} followers
+          </Typography>
+          <Typography variant='body2'>
+            {user.following.length} following
+          </Typography>
         </Box>
         <Box mt={1}>
           <Typography variant='body1'>

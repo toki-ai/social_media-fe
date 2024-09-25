@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material'
 import { red } from '@mui/material/colors'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
@@ -24,6 +23,7 @@ import { MultilineTextDisplay } from '../MultilineTextDisplay'
 import { UserProfile } from '../../interface/UserInterface'
 import { isLikeByRecentUser } from '../../utils/isLikeByRecentUser'
 import { likePost } from '../../api/postApi'
+import { formatDateTime } from '../../utils/formatDateTime'
 
 const PostCard: React.FC<{ post: Post; user: UserProfile | null }> = ({
   post,
@@ -45,21 +45,45 @@ const PostCard: React.FC<{ post: Post; user: UserProfile | null }> = ({
       setIsLiked(!isLiked)
     }
   }
+  const handleSelectProfile = (id: string) => {
+    navigate(`/profile/${id}`)
+  }
   return (
     <Card>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
+          <Avatar
+            sx={{
+              bgcolor: red[500],
+              cursor: 'pointer',
+              width: '35px',
+              height: '35px',
+            }}
+            aria-label='recipe'
+            onClick={() => handleSelectProfile(post.user.id)}
+          >
             {post.user.lastName.charAt(0)}
           </Avatar>
         }
-        action={
-          <IconButton aria-label='settings'>
-            <MoreVertIcon />
-          </IconButton>
+        title={
+          <Box sx={{ display: 'flex', gap: '10px' }}>
+            <Typography
+              variant='body1'
+              onClick={() => handleSelectProfile(post.user.id)}
+              sx={{
+                '&:hover': { color: 'black' },
+                cursor: 'pointer',
+                color: 'black',
+              }}
+            >
+              @{post.user.firstName.toLocaleLowerCase()}_
+              {post.user.lastName.toLocaleLowerCase()}{' '}
+            </Typography>
+            <Typography variant='body1' sx={{ color: 'gray' }}>
+              • {formatDateTime(post.date)}
+            </Typography>
+          </Box>
         }
-        title={`${post.user.firstName} ${post.user.lastName}`}
-        subheader={post.date}
       />
       <Box sx={{ cursor: 'pointer' }}>
         <CardMedia

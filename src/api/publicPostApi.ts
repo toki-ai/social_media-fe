@@ -36,13 +36,11 @@ export const getPostById = async (postId: string): Promise<Post | null> => {
   return null
 }
 
-export const searchUser = async (
-  query: string
-): Promise<UserProfile | null> => {
+export const getPostByUser = async (userId: string): Promise<Post[] | null> => {
   try {
-    const response = await axios.get(`${baseURL}/users/search?query=${query}`)
+    const response = await axios.get(`${baseURL}/posts/userPosts/${userId}`)
     if (response) {
-      const data: UserProfile = response.data
+      const data: Post[] = response.data
       return data
     }
   } catch (error: any) {

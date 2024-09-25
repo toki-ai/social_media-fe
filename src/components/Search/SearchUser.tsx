@@ -12,7 +12,7 @@ import {
   Box,
 } from '@mui/material'
 import { UserProfile } from '../../interface/UserInterface'
-import { searchUser } from '../../api/publicPostApi'
+import { searchUser } from '../../api/publicUserApi'
 
 interface SearchBarProps {
   onUserSelect: (user: UserProfile) => void

@@ -40,7 +40,7 @@ export const navigationMenu = [
   {
     title: 'Profile',
     icon: Face2Icon,
-    path: '/profile/1',
+    path: '/profile',
   },
   {},
 ]

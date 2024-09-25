@@ -24,6 +24,12 @@ export interface UserProfile {
   saved: Post[]
 }
 
+export interface UserUpdate {
+  firstName: string
+  lastName: string
+  gender: string
+}
+
 export interface AuthState {
   jwt: string | null
   error: string | Error | null

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import ProtectedRoute from './ProtectedRoute'
 import Message from '../pages/Message/Message'
-import Profile from '../components/Profile/Profile'
+import Profile from '../pages/Profile/Profile'
 import Homepage from '../pages/Homepage/HomePage'
 import Authentication from '../pages/Authentication/Authentication'
 import AppLayout from '../layout/AppLayout'
@@ -21,8 +21,9 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <Homepage /> },
       { path: '/post/:id', element: <PostDetail /> },
+      { path: '/profile/:id', element: <Profile /> },
       {
-        path: '/profile/:id',
+        path: '/profile',
         element: (
           <ProtectedRoute>
             <Profile />
