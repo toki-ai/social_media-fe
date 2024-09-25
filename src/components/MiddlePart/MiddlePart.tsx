@@ -9,7 +9,7 @@ import { UserProfile } from '../../interface/UserInterface'
 import PostCard from '../Post/PostCard'
 import CreatePostModal from '../CreatePost/CreatePostModal'
 import { Post } from '../../interface/PostInterface'
-import { getAllPost } from '../../api/postApi'
+import { getAllPost } from '../../api/publicPostApi'
 
 const story: number[] = [1, 2, 3, 4, 5, 6, 7]
 
@@ -27,16 +27,6 @@ const MiddlePart = () => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      getUserProfile().then((data) => {
-        if (data) {
-          setUser(data)
-        } else {
-          console.log('Failed to get user')
-        }
-      })
-    }
     getAllPost().then((data) => {
       if (data) {
         setListPost(data)
@@ -44,6 +34,15 @@ const MiddlePart = () => {
         console.log('Failed to get post')
       }
     })
+
+    const token = localStorage.getItem('jwt')
+    if (token) {
+      getUserProfile().then((data) => {
+        if (data) {
+          setUser(data)
+        }
+      })
+    }
   }, [])
 
   return (
@@ -66,7 +65,7 @@ const MiddlePart = () => {
           />
         ))}
       </Box>
-      {user && (
+      {user != null && (
         <Card sx={{ padding: 2, marginTop: 2, cursor: 'pointer' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Avatar sx={{ margin: '0 10px' }} />
@@ -106,16 +105,18 @@ const MiddlePart = () => {
         sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 2 }}
       >
         {listPost.map((item: Post, index: number) => (
-          <Box sx={{ marginBottom: 2 }}>
-            <PostCard key={index} post={item} />
+          <Box sx={{ marginBottom: 2 }} key={index}>
+            <PostCard post={item} user={user} />
           </Box>
         ))}
-        <Box>
-          <CreatePostModal
-            open={open}
-            handleClose={handleCloseCreatePostModal}
-          />
-        </Box>
+        {user != null && (
+          <Box>
+            <CreatePostModal
+              open={open}
+              handleClose={handleCloseCreatePostModal}
+            />
+          </Box>
+        )}
       </Box>
     </Box>
   )

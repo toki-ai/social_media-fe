@@ -1,7 +1,7 @@
 import { Button, TextField, Typography, Box } from '@mui/material'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { signIn } from '../../api/authApi'
 import { LoginData } from '../../interface/UserInterface'
 
@@ -19,11 +19,10 @@ const validationSchema = Yup.object({
 
 const Login = () => {
   const navigate = useNavigate()
-
+  const location = useLocation()
   const handleSubmit = async (values: LoginData) => {
     try {
       await signIn(values)
-      console.log('Login successful', values)
       navigate('/')
     } catch (error) {
       console.error('Login failed', error)

@@ -98,7 +98,13 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
   useEffect(() => {
     try {
       getUserProfile().then((res) => {
-        if (res != null) setUserName(res.firstName + ' ' + res.lastName)
+        if (res != null)
+          setUserName(
+            '@' +
+              res.firstName.toLocaleLowerCase() +
+              '_' +
+              res.lastName.toLocaleLowerCase()
+          )
       })
     } catch (err) {
       console.log(err)
@@ -128,67 +134,90 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
             borderRadius: 2,
             display: 'flex',
             flexDirection: 'column',
+            maxHeight: '90vh',
+            overflowY: 'auto',
           }}
         >
-          <Avatar />
-          <Typography variant='h6' component='h2' mt={2}>
-            {userName}
-          </Typography>
-          <Typography id='modal-modal-title' variant='h6' component='h2' mb={2}>
-            Create New Post
-          </Typography>
-
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'left',
+            }}
+          >
+            <Avatar />
+            <Typography variant='body1' marginLeft={1}>
+              {userName}
+            </Typography>
+          </Box>
           <TextField
-            label="What's on your mind?"
+            label="What's new?"
             multiline
-            rows={4}
+            minRows={1}
             fullWidth
             value={postContent}
             onChange={handlePostChange}
             variant='outlined'
             margin='normal'
+            InputProps={{
+              sx: {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  border: 'none',
+                },
+                paddingBottom: '0',
+                '& input': {
+                  paddingBottom: '0',
+                },
+              },
+            }}
           />
-
-          <input
-            accept='image/*'
-            type='file'
-            id='image-input'
-            style={{ display: 'none' }}
-            onChange={handleImageChange}
-          />
-          <label htmlFor='image-input'>
-            <PhotoIcon />
-          </label>
-          <input
-            accept='video/*'
-            type='file'
-            id='video-input'
-            style={{ display: 'none' }}
-            onChange={handleVideoChange}
-          />
-          <label htmlFor='video-input'>
-            <CameraRollIcon />
-          </label>
-          {image && (
-            <Box
-              component='img'
-              sx={{
-                boxShadow: 3,
-              }}
-              alt='Sample Image'
-              src={image}
-            />
-          )}
-          {video && (
-            <Card sx={{ maxWidth: 600 }}>
-              <CardMedia
-                component='video'
-                controls
-                src={video}
-                sx={{ height: 300 }}
+          <Box sx={{ paddingX: '12px', maxWidth: '100%' }}>
+            {image && (
+              <Box
+                component='img'
+                sx={{
+                  boxShadow: 3,
+                  maxWidth: '100%',
+                }}
+                alt='Sample Image'
+                src={image}
               />
-            </Card>
-          )}
+            )}
+            {video && (
+              <Card sx={{ maxWidth: 600 }}>
+                <CardMedia
+                  component='video'
+                  controls
+                  src={video}
+                  sx={{ height: 300, maxWidth: '100%' }}
+                />
+              </Card>
+            )}
+          </Box>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'space-around', marginY: 2 }}
+          >
+            <input
+              accept='image/*'
+              type='file'
+              id='image-input'
+              style={{ display: 'none' }}
+              onChange={handleImageChange}
+            />
+            <label htmlFor='image-input'>
+              <PhotoIcon />
+            </label>
+            <input
+              accept='video/*'
+              type='file'
+              id='video-input'
+              style={{ display: 'none' }}
+              onChange={handleVideoChange}
+            />
+            <label htmlFor='video-input'>
+              <CameraRollIcon />
+            </label>
+          </Box>
           <Box mt={2} display='flex' justifyContent='flex-end'>
             <Button onClick={handleClose} sx={{ marginRight: 2 }}>
               Cancel

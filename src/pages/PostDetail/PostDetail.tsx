@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PostCard from '../../components/Post/PostCard'
 import {
   Avatar,
@@ -10,19 +10,30 @@ import {
   Typography,
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
-import { get } from 'http'
-import { getPostById } from '../../api/postApi'
 import { Post } from '../../interface/PostInterface'
 import Comment from '../../components/Comment/Comment'
+import { UserProfile } from '../../interface/UserInterface'
+import { getUserProfile } from '../../api/userApi'
+import { getPostById } from '../../api/publicPostApi'
 
 const PostDetail = () => {
   const { id } = useParams<{ id: string }>()
   const [post, setPost] = React.useState<Post | null>(null)
   const [comments, setComments] = React.useState<string>('')
+  const [user, setUser] = useState<UserProfile | null>(null)
+
   useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      getUserProfile().then((data) => {
+        if (data) {
+          setUser(data)
+        }
+      })
+    }
     if (id) {
       try {
-        const response = getPostById(id).then((data) => {
+        getPostById(id).then((data) => {
           if (data) {
             setPost(data)
           } else {
@@ -41,7 +52,8 @@ const PostDetail = () => {
   }, [id])
   return (
     <Box sx={{ paddingX: 5 }}>
-      <Box
+      <Grid
+        container
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -49,10 +61,10 @@ const PostDetail = () => {
           borderRadius: 1,
         }}
       >
-        <Grid lg={8}>
+        <Grid item lg={8}>
           {post && (
             <Box>
-              <PostCard post={post} />
+              <PostCard post={post} user={user} />
             </Box>
           )}
           <Card
@@ -88,7 +100,7 @@ const PostDetail = () => {
             </Box>
           </Card>
         </Grid>
-      </Box>
+      </Grid>
     </Box>
   )
 }

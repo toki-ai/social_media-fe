@@ -30,7 +30,7 @@ export const navigationMenu = [
   {
     title: 'Messages',
     icon: ChatBubbleOutlineOutlinedIcon,
-    path: '/direct/inbox',
+    path: '/messages',
   },
   {
     title: 'Notifications',

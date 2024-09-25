@@ -17,17 +17,33 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
 import SendIcon from '@mui/icons-material/Send'
 import BookmarkIcon from '@mui/icons-material/Bookmark'
 import ForumIcon from '@mui/icons-material/Forum'
-import React from 'react'
+import React, { useState } from 'react'
 import { Post } from '../../interface/PostInterface'
 import { useNavigate } from 'react-router-dom'
 import { MultilineTextDisplay } from '../MultilineTextDisplay'
+import { UserProfile } from '../../interface/UserInterface'
+import { isLikeByRecentUser } from '../../utils/isLikeByRecentUser'
+import { likePost } from '../../api/postApi'
 
-const PostCard: React.FC<{ post: Post }> = ({ post }) => {
-  const isFavorited = true
+const PostCard: React.FC<{ post: Post; user: UserProfile | null }> = ({
+  post,
+  user,
+}) => {
+  const [isLiked, setIsLiked] = useState(
+    user != null && isLikeByRecentUser(user.id, post)
+  )
   const isBookmarked = true
   const navigate = useNavigate()
   const handleClick = () => {
     navigate(`/post/${post.id}`)
+  }
+  const handleLikePost = () => {
+    if (user == null) {
+      navigate(`/login`)
+    } else {
+      likePost(post.id)
+      setIsLiked(!isLiked)
+    }
   }
   return (
     <Card>
@@ -45,24 +61,25 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
         title={`${post.user.firstName} ${post.user.lastName}`}
         subheader={post.date}
       />
-      <Box onClick={handleClick} sx={{ cursor: 'pointer' }}>
+      <Box sx={{ cursor: 'pointer' }}>
         <CardMedia
           component='img'
           image={post.image ? post.image : post.video}
           alt='post media'
+          onClick={handleClick}
         />
         <CardContent>
           <MultilineTextDisplay text={post.caption} />
         </CardContent>
         <CardActions disableSpacing sx={{ justifyContent: 'space-between' }}>
           <Box>
-            <IconButton aria-label='add to favorites'>
-              {isFavorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            <IconButton aria-label='add to favorites' onClick={handleLikePost}>
+              {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
             </IconButton>
             <IconButton aria-label='share'>
               <SendIcon />
             </IconButton>
-            <IconButton aria-label='comment'>
+            <IconButton aria-label='comment' onClick={handleClick}>
               <ForumIcon />
             </IconButton>
           </Box>

@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import ProtectedRoute from '../utils/ProtectedRoute'
+import ProtectedRoute from './ProtectedRoute'
 import Message from '../pages/Message/Message'
 import Profile from '../components/Profile/Profile'
 import Homepage from '../pages/Homepage/HomePage'
@@ -29,15 +29,15 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      {
-        path: '/messages',
-        element: (
-          <ProtectedRoute>
-            <Message />
-          </ProtectedRoute>
-        ),
-      },
     ],
+  },
+  {
+    path: '/messages',
+    element: (
+      <ProtectedRoute>
+        <Message />
+      </ProtectedRoute>
+    ),
   },
   ...publicRoutes,
   { path: '*', element: <ErrorPage /> },
