@@ -1,5 +1,5 @@
 import { UserProfile } from '../interface/UserInterface'
-import { apiCaller } from './ApiCaller'
+import { apiCaller } from './apiCaller'
 
 export const getUserProfile = async (): Promise<UserProfile | null> => {
   try {

@@ -2,7 +2,7 @@ import { Button, TextField, Typography, Box } from '@mui/material'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router-dom'
-import { signIn } from '../../api/AuthApi'
+import { signIn } from '../../api/authApi'
 import { LoginData } from '../../interface/UserInterface'
 
 const initialValues = {

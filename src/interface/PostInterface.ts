@@ -1,3 +1,6 @@
+import { date } from 'yup'
+import { UserProfile } from './UserInterface'
+
 export interface Comment {
   id: string
   content: string
@@ -11,8 +14,14 @@ export interface Post {
   caption: string
   image: string
   video: string
-  user: string
-  date: string
+  user: UserProfile
+  liked: UserProfile[]
   comments: Comment[]
-  liked: string[]
+  date: string
+}
+
+export interface PostCreate {
+  caption: string
+  image: string
+  video: string
 }

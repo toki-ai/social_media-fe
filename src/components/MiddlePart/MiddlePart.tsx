@@ -4,15 +4,17 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 import VideocamIcon from '@mui/icons-material/Videocam'
 import StoryCircle from './StoryCircle'
 import { useEffect, useState } from 'react'
-import { getUserProfile } from '../../api/UserApi'
+import { getUserProfile } from '../../api/userApi'
 import { UserProfile } from '../../interface/UserInterface'
 import PostCard from '../Post/PostCard'
 import CreatePostModal from '../CreatePost/CreatePostModal'
+import { Post } from '../../interface/PostInterface'
+import { getAllPost } from '../../api/postApi'
 
 const story: number[] = [1, 2, 3, 4, 5, 6, 7]
-const post: number[] = [1, 2, 3, 4, 5]
 
 const MiddlePart = () => {
+  const [listPost, setListPost] = useState<Post[]>([])
   const [open, setOpen] = useState<boolean>(false)
   const [user, setUser] = useState<UserProfile | null>(null)
 
@@ -30,10 +32,18 @@ const MiddlePart = () => {
       getUserProfile().then((data) => {
         if (data) {
           setUser(data)
-          console.log('User: ', data)
+        } else {
+          console.log('Failed to get user')
         }
       })
     }
+    getAllPost().then((data) => {
+      if (data) {
+        setListPost(data)
+      } else {
+        console.log('Failed to get post')
+      }
+    })
   }, [])
 
   return (
@@ -95,8 +105,10 @@ const MiddlePart = () => {
       <Box
         sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 2 }}
       >
-        {post.map((index) => (
-          <PostCard key={index} />
+        {listPost.map((item: Post, index: number) => (
+          <Box sx={{ marginBottom: 2 }}>
+            <PostCard key={index} post={item} />
+          </Box>
         ))}
         <Box>
           <CreatePostModal

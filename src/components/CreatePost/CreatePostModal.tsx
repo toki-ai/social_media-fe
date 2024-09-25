@@ -13,24 +13,20 @@ import {
 import CameraRollIcon from '@mui/icons-material/CameraRoll'
 import PhotoIcon from '@mui/icons-material/Photo'
 import { useEffect, useState } from 'react'
-import { getUserProfile } from '../../api/UserApi'
+import { getUserProfile } from '../../api/userApi'
 import { uploadMedia } from '../../utils/uploadCloudnary'
+import { Post, PostCreate } from '../../interface/PostInterface'
+import { createPost } from '../../api/postApi'
 
 interface CreatePostModalProps {
   open: boolean
   handleClose: () => void
 }
 
-interface PostCreate {
-  caption: string
-  image: string | null
-  video: string | null
-}
-
 const initialPostCreate: PostCreate = {
   caption: '',
-  image: null,
-  video: null,
+  image: '',
+  video: '',
 }
 
 const CreatePostModal: React.FC<CreatePostModalProps> = ({
@@ -39,26 +35,39 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
 }) => {
   const [postContent, setPostContent] = useState<string>('')
   const [userName, setUserName] = useState<string>('')
-  const [image, setImage] = useState<string | null>(null)
-  const [video, setVideo] = useState<string | null>(null)
+  const [image, setImage] = useState<string>('')
+  const [video, setVideo] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const handlePostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostContent(e.target.value)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsLoading(true)
-    const post: PostCreate = {
+    const postInfo: PostCreate = {
       caption: postContent,
       image: image,
       video: video,
     }
-    console.log('Post:', post)
-    setPostContent('')
-    setImage(null)
-    setVideo(null)
-    setIsLoading(false)
-    handleClose()
+    try {
+      const response = await createPost(postInfo)
+      if (response) {
+        console.log('Post created successfully:', response)
+        setPostContent('')
+        setImage('')
+        setVideo('')
+      } else {
+        console.log('Failed to create post:', response)
+      }
+    } catch (error) {
+      console.error('Error creating post:', error)
+    } finally {
+      setPostContent('')
+      setImage('')
+      setVideo('')
+      setIsLoading(false)
+      handleClose()
+    }
   }
 
   const handleVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

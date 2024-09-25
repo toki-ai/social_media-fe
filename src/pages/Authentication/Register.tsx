@@ -12,7 +12,7 @@ import { useState } from 'react'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import { RegisterData } from '../../interface/UserInterface'
-import { signUp } from '../../api/AuthApi'
+import { signUp } from '../../api/authApi'
 
 const initialValues: RegisterData = {
   firstName: '',

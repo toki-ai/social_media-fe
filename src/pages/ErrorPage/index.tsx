@@ -7,10 +7,12 @@ import {
   Typography,
 } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const ErrorPage: React.FC = () => {
+  const navigate = useNavigate()
   const handleClick = () => {
-    window.location.href = '/'
+    navigate('/')
   }
 
   return (

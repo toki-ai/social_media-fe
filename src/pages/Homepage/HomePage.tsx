@@ -6,11 +6,7 @@ const Homepage: React.FC = () => {
   return (
     <Box width='100%'>
       <Grid container>
-        <Grid
-          item
-          lg={8}
-          sx={{ px: 5, display: 'flex', justifyContent: 'center' }}
-        >
+        <Grid item lg={8} sx={{ display: 'flex', justifyContent: 'center' }}>
           <MiddlePart />
         </Grid>
         <Grid item lg={4}>

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Card,
   CardActions,
   CardContent,
@@ -16,17 +17,24 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
 import SendIcon from '@mui/icons-material/Send'
 import BookmarkIcon from '@mui/icons-material/Bookmark'
 import ForumIcon from '@mui/icons-material/Forum'
+import React from 'react'
+import { Post } from '../../interface/PostInterface'
+import { useNavigate } from 'react-router-dom'
+import { MultilineTextDisplay } from '../MultilineTextDisplay'
 
-const PostCard = () => {
-  const isFavorited = true // Replace with actual state management logic
-  const isBookmarked = true // Replace with actual state management logic
-
+const PostCard: React.FC<{ post: Post }> = ({ post }) => {
+  const isFavorited = true
+  const isBookmarked = true
+  const navigate = useNavigate()
+  const handleClick = () => {
+    navigate(`/post/${post.id}`)
+  }
   return (
-    <Card sx={{ marginBottom: 2 }}>
+    <Card>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
-            R
+            {post.user.lastName.charAt(0)}
           </Avatar>
         }
         action={
@@ -34,40 +42,37 @@ const PostCard = () => {
             <MoreVertIcon />
           </IconButton>
         }
-        title='Shrimp and Chorizo Paella'
-        subheader='September 14, 2016'
+        title={`${post.user.firstName} ${post.user.lastName}`}
+        subheader={post.date}
       />
-      <CardMedia
-        component='img'
-        height='194'
-        image='https://i.pinimg.com/564x/3b/54/7e/3b547e5efb04fb2ff71592e57603a288.jpg'
-        alt='Paella dish'
-      />
-      <CardContent>
-        <Typography variant='body2' color='text.secondary'>
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing sx={{ justifyContent: 'space-between' }}>
-        <div>
-          <IconButton aria-label='add to favorites'>
-            {isFavorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          </IconButton>
-          <IconButton aria-label='share'>
-            <SendIcon />
-          </IconButton>
-          <IconButton aria-label='comment'>
-            <ForumIcon />
-          </IconButton>
-        </div>
-        <div>
-          <IconButton aria-label='save'>
-            {isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-          </IconButton>
-        </div>
-      </CardActions>
+      <Box onClick={handleClick} sx={{ cursor: 'pointer' }}>
+        <CardMedia
+          component='img'
+          image={post.image ? post.image : post.video}
+          alt='post media'
+        />
+        <CardContent>
+          <MultilineTextDisplay text={post.caption} />
+        </CardContent>
+        <CardActions disableSpacing sx={{ justifyContent: 'space-between' }}>
+          <Box>
+            <IconButton aria-label='add to favorites'>
+              {isFavorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </IconButton>
+            <IconButton aria-label='share'>
+              <SendIcon />
+            </IconButton>
+            <IconButton aria-label='comment'>
+              <ForumIcon />
+            </IconButton>
+          </Box>
+          <Box>
+            <IconButton aria-label='save'>
+              {isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+            </IconButton>
+          </Box>
+        </CardActions>
+      </Box>
     </Card>
   )
 }
