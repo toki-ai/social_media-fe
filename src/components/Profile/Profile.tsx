@@ -1,12 +1,15 @@
 import { Box, Tab, Tabs, Grid } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { tabs } from './TabNavigation'
 import UserPostCard from '../Post/UserPostCard'
 import ProfileHeader from './ProfileHeader'
 import UserReelsCard from '../Reels/UserReelsCard'
 import { getUserProfile } from '../../api/UserApi'
+import { UserProfile } from '../../interface/UserInterface'
+import { getPostByUser } from '../../api/postApi'
+import { Post } from '../../interface/PostInterface'
 
-const post: number[] = [1, 2, 3, 4, 5]
+//const post: number[] = [1, 2, 3, 4, 5]
 const saved: number[] = [1, 2, 3, 4, 5]
 const reels: number[] = [1, 2, 3, 4, 5, 6, 7]
 
@@ -17,13 +20,36 @@ const Profile = () => {
     setValue(newValue)
   }
 
+  const [post, setPost] = React.useState<Post[]>([])
+
   useEffect(() => {
-    getUserProfile()
-  },[])
-  
+    if (value === 'reels') {
+      console.log('Reels')
+    } else if (value === 'posts') {
+      getPostByUser().then((data) => {
+        if (data) {
+          setPost(data)
+        }
+      })
+    } else if (value === 'saved') {
+    }
+  }, [value])
+
+  const [user, setUser] = useState<UserProfile | null>(null)
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      getUserProfile().then((data) => {
+        if (data) {
+          setUser(data)
+        }
+      })
+    }
+  }, [])
+
   return (
     <Box py={10} width='80%'>
-      <ProfileHeader />
+      {user != null && <ProfileHeader user={user} />}
       <Box>
         <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'lightgrey' }}>
           <Tabs
@@ -42,9 +68,9 @@ const Profile = () => {
         <Box mt={5}>
           <Grid container spacing={2} justifyContent='center'>
             {value === 'posts' &&
-              post.map((index: number) => (
+              post.map((value: Post, index: number) => (
                 <Grid item xs={4} sm={3} md={2} key={index}>
-                  <UserPostCard src='https://i.pinimg.com/564x/4f/18/4c/4f184c61cf9a471ac04080307e739ccd.jpg' />
+                  <UserPostCard src={value.image} />
                 </Grid>
               ))}
             {value === 'reels' &&

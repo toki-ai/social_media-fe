@@ -1,6 +1,7 @@
 import { Avatar, Button, Box, Typography } from '@mui/material'
+import { UserProfile } from '../../interface/UserInterface'
 
-const ProfileHeader = () => {
+const ProfileHeader: React.FC<{ user: UserProfile }> = ({ user }) => {
   const isEditMode = true
 
   return (
@@ -19,7 +20,7 @@ const ProfileHeader = () => {
       <Box width='70%' pl={2}>
         <Box display='flex' alignItems='center'>
           <Typography variant='h6' component='span'>
-            toki._.ai
+            @{user?.firstName.toLowerCase()}_{user?.lastName.toLowerCase()}
           </Typography>
           {isEditMode ? (
             <Box ml={2}>
@@ -87,7 +88,9 @@ const ProfileHeader = () => {
           <Typography variant='body2'>213 following</Typography>
         </Box>
         <Box mt={1}>
-          <Typography variant='body1'>En Deo 🍊</Typography>
+          <Typography variant='body1'>
+            {user?.firstName} {user?.lastName}
+          </Typography>
           <Typography variant='body2'>
             Don't let fear stop you from playing the game♟️✨
           </Typography>

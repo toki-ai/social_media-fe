@@ -1,7 +1,7 @@
 import React from 'react'
-import SearchUser from '../../../components/Search/SearchUser'
 import SuggestUserCard from './SuggestUserCard'
 import { Card, Typography, Box } from '@mui/material'
+import SearchUser from '../Search/SearchUser'
 
 const popularUsers: number[] = [1, 2, 3, 4, 5]
 

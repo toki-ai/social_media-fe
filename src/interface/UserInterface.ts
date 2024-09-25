@@ -15,8 +15,8 @@ export interface RegisterData {
 
 export interface UserProfile {
   id: string
-  firstname: string
-  lastname: string
+  firstName: string
+  lastName: string
   email: string
   gender: string
   following: string[]

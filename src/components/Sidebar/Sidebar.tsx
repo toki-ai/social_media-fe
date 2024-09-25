@@ -10,10 +10,12 @@ import {
 import SortIcon from '@mui/icons-material/Sort'
 import React from 'react'
 import { navigationMenu } from './SideBarNavigation'
+import { useNavigate } from 'react-router-dom'
 
 const SideBar = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const navigate = useNavigate()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -33,7 +35,16 @@ const SideBar = () => {
           {navigationMenu.map((item, index) => (
             <Box
               key={index}
-              className='cursor-pointer flex space-x-3 items-center'
+              sx={{
+                display: 'flex',
+                cursor: 'pointer',
+                alignItems: 'center',
+                marginTop: '30px',
+                paddingLeft: '20px',
+              }}
+              onClick={() => {
+                if (item.path) navigate(item.path)
+              }}
             >
               {item.icon && <item.icon />}
               <Typography variant='h6'>{item.title}</Typography>
