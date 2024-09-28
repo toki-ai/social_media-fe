@@ -1,11 +1,12 @@
 import { Avatar, Box, Typography } from '@mui/material'
 import React from 'react'
+import { UserProfile } from '../../interface/UserInterface'
+import { Chat } from '../../interface/ChatInterface'
 
-interface UserChatCardProps {
-  name: string
-}
-
-const UserChatCard: React.FC<UserChatCardProps> = ({ name }) => {
+const UserChatCard: React.FC<{
+  user: UserProfile
+  isCurrentChat: boolean
+}> = ({ user, isCurrentChat }) => {
   return (
     <Box
       sx={{
@@ -14,11 +15,12 @@ const UserChatCard: React.FC<UserChatCardProps> = ({ name }) => {
         alignItems: 'center',
         cursor: 'pointer',
         '&:hover': { backgroundColor: '#f5f5f5' },
+        bgcolor: isCurrentChat ? 'gray' : 'white',
       }}
     >
       <Avatar />
       <Typography variant='body1' sx={{ ml: 2 }}>
-        {name}
+        {user.firstName + ' ' + user.lastName}
       </Typography>
     </Box>
   )

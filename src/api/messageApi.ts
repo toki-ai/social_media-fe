@@ -27,7 +27,7 @@ export const getMessageByChat = async (
   chatId: string
 ): Promise<Message[] | null> => {
   try {
-    const response = await apiCaller.post<Message[]>(`/messages/${chatId}`)
+    const response = await apiCaller.get<Message[]>(`/messages/${chatId}`)
     if (response) {
       const data: Message[] = response
       return data

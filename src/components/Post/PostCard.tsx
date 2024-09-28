@@ -25,10 +25,10 @@ import { isLikeByRecentUser } from '../../utils/isLikeByRecentUser'
 import { likePost } from '../../api/postApi'
 import { formatDateTime } from '../../utils/formatDateTime'
 
-const PostCard: React.FC<{ post: Post; user: UserProfile | null }> = ({
-  post,
-  user,
-}) => {
+const PostCard: React.FC<{
+  post: Post
+  user: UserProfile | null | undefined
+}> = ({ post, user }) => {
   const [isLiked, setIsLiked] = useState(
     user != null && isLikeByRecentUser(user.id, post)
   )

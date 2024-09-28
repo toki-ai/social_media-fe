@@ -6,7 +6,10 @@ export const createChat = async (
 ): Promise<Chat | null> => {
   try {
     if (resUserId) {
-      const response = await apiCaller.post<Chat>('/chats/create', resUserId)
+      const body = {
+        resUserId: resUserId,
+      }
+      const response = await apiCaller.post<Chat>('/chats/create', body)
       return response
     } else {
       console.log('Error: No data')
@@ -20,7 +23,7 @@ export const createChat = async (
 
 export const getChatByUser = async (): Promise<Chat[] | null> => {
   try {
-    const response = await apiCaller.post<Chat[]>('/chats/userChats')
+    const response = await apiCaller.get<Chat[]>('/chats/userChats')
     return response
   } catch (err) {
     console.log('Error: ' + err)

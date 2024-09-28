@@ -3,20 +3,18 @@ import AddIcon from '@mui/icons-material/Add'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 import VideocamIcon from '@mui/icons-material/Videocam'
 import StoryCircle from './StoryCircle'
-import { useEffect, useState } from 'react'
-import { getUserProfile } from '../../api/userApi'
-import { UserProfile } from '../../interface/UserInterface'
+import { useContext, useEffect, useState } from 'react'
 import PostCard from '../Post/PostCard'
 import CreatePostModal from '../CreatePost/CreatePostModal'
 import { Post } from '../../interface/PostInterface'
 import { getAllPost } from '../../api/publicPostApi'
+import { UserContext, UserContextType } from '../../context/userContext'
 
 const story: number[] = [1, 2, 3, 4, 5, 6, 7]
 
 const MiddlePart = () => {
   const [listPost, setListPost] = useState<Post[]>([])
   const [open, setOpen] = useState<boolean>(false)
-  const [user, setUser] = useState<UserProfile | null>(null)
 
   const handleOpenCreatePostModal = () => {
     setOpen(true)
@@ -26,6 +24,7 @@ const MiddlePart = () => {
     setOpen(false)
   }
 
+  const { user }: UserContextType = useContext(UserContext) as UserContextType
   useEffect(() => {
     getAllPost().then((data) => {
       if (data) {
@@ -34,15 +33,6 @@ const MiddlePart = () => {
         console.log('Failed to get post')
       }
     })
-
-    const token = localStorage.getItem('jwt')
-    if (token) {
-      getUserProfile().then((data) => {
-        if (data) {
-          setUser(data)
-        }
-      })
-    }
   }, [])
 
   return (
@@ -68,7 +58,9 @@ const MiddlePart = () => {
       {user != null && (
         <Card sx={{ padding: 2, marginTop: 2, cursor: 'pointer' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar sx={{ margin: '0 10px' }} />
+            <Avatar sx={{ margin: '0 10px' }}>
+              {user.lastName.charAt(0).toUpperCase()}
+            </Avatar>
             <InputBase
               readOnly
               placeholder='What do you want to share?'

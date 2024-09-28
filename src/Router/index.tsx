@@ -30,15 +30,15 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: '/messages',
+        element: (
+          <ProtectedRoute>
+            <Message />
+          </ProtectedRoute>
+        ),
+      },
     ],
-  },
-  {
-    path: '/messages',
-    element: (
-      <ProtectedRoute>
-        <Message />
-      </ProtectedRoute>
-    ),
   },
   ...publicRoutes,
   { path: '*', element: <ErrorPage /> },
