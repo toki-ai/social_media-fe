@@ -10,19 +10,18 @@ import {
 } from '@mui/material'
 import MiniSideBar from '../../components/Sidebar/MiniSidebar'
 import { Favorite, Send } from '@mui/icons-material'
-import UserChatCard from '../../components/UserChatCard/UserChatCard'
 import SearchUser from '../../components/Search/SearchUser'
-import { searchUser } from '../../api/publicPostApi'
 import { UserProfile } from '../../interface/UserInterface'
 import React from 'react'
-
 const Message = () => {
-  const [searchResult, setSearchResult] = React.useState<UserProfile[] | null>(
+  const [selectedUser, setSelectedUser] = React.useState<UserProfile | null>(
     null
   )
   const handleUserSelect = (user: UserProfile) => {
-    console.log(user)
+    setSelectedUser(user)
   }
+
+  //useEffect(() => {},[])
   return (
     <Grid container>
       <Grid item container lg={4}>
@@ -30,7 +29,6 @@ const Message = () => {
           <MiniSideBar />
         </Grid>
         <Grid item lg={10}>
-          {/* Sidebar */}
           <Box
             sx={{
               bgcolor: 'white',
@@ -39,8 +37,14 @@ const Message = () => {
               flexDirection: 'column',
             }}
           >
-            {/* User profile and status */}
-            <Box sx={{ p: 2 }}>
+            <Box
+              sx={{
+                p: 2,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
               <Typography variant='h6' sx={{ ml: 2 }}>
                 toki._.ai
               </Typography>
@@ -48,19 +52,13 @@ const Message = () => {
             <Divider />
             <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
               <SearchUser onUserSelect={handleUserSelect} />
-              {/* {searchResult &&
-                searchResult.map((item, index) => (
-                  <UserChatCard key={index} name={item.firstName} />
-                ))} */}
             </Box>
           </Box>
         </Grid>
       </Grid>
       <Grid item lg={8}>
         <Box sx={{ display: 'flex', height: '100vh', bgcolor: '#f0f2f5' }}>
-          {/* Chat Window */}
           <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-            {/* Chat Header */}
             <Box
               sx={{
                 p: 2,
@@ -72,11 +70,9 @@ const Message = () => {
             >
               <Avatar />
               <Typography variant='h6' sx={{ ml: 2 }}>
-                Di
+                {selectedUser?.firstName} {selectedUser?.lastName}
               </Typography>
             </Box>
-
-            {/* Chat Messages */}
             <Box
               sx={{
                 flexGrow: 1,

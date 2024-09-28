@@ -2,14 +2,9 @@ import React, { useState } from 'react'
 import {
   TextField,
   CircularProgress,
-  Popover,
-  List,
-  ListItemText,
-  ListItemButton,
   Card,
   CardContent,
   Typography,
-  Box,
 } from '@mui/material'
 import { UserProfile } from '../../interface/UserInterface'
 import { searchUser } from '../../api/publicUserApi'
@@ -22,7 +17,6 @@ const SearchUser: React.FC<SearchBarProps> = ({ onUserSelect }) => {
   const [searchValue, setSearchValue] = useState<string>('')
   const [userList, setUserList] = useState<UserProfile[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log('Input change:', event.target.value)
@@ -33,8 +27,10 @@ const SearchUser: React.FC<SearchBarProps> = ({ onUserSelect }) => {
       setLoading(true)
       searchUser(query)
         .then((data) => {
-          console.log('API Response:', data)
-          if (data) setUserList(Array.isArray(data) ? data : [data])
+          if (data) {
+            setUserList(Array.isArray(data) ? data : [data])
+            setLoading(false)
+          }
         })
         .catch((error) => {
           console.error('API Error:', error)

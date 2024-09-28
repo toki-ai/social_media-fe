@@ -4,7 +4,7 @@ import MovieIcon from '@mui/icons-material/Movie'
 import AddIcon from '@mui/icons-material/Add'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import Face2Icon from '@mui/icons-material/Face2'
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined'
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 
 export const navigationMenu = [
   {
@@ -29,7 +29,7 @@ export const navigationMenu = [
   },
   {
     title: 'Messages',
-    icon: ChatBubbleOutlineOutlinedIcon,
+    icon: QuestionAnswerIcon,
     path: '/messages',
   },
   {
