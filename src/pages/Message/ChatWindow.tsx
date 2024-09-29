@@ -20,6 +20,22 @@ import MessageItem from '../../components/MessageItem/MessageItem'
 const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
   currentChat,
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [listMessages, setListMessages] = useState<Message[]>([])
+  const [image, setImage] = useState<string>('')
+  const [message, setMessage] = useState<string>('')
+
+  useEffect(() => {
+    if (currentChat != null)
+      try {
+        getMessageByChat(currentChat.id).then((data) => {
+          if (data && Array.isArray(data)) setListMessages(data)
+        })
+      } catch (e) {
+        console.log(e)
+      }
+  }, [currentChat])
+
   const { user }: { user: UserProfile | null } = useContext(
     UserContext
   ) as UserContextType
@@ -29,14 +45,22 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
     resUser = getResUser(currentChat?.users, user)
   }
 
-  const [message, setMessage] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [image, setImage] = useState<string>('')
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setIsLoading(true)
+      const uploadedImageUrl = await uploadMedia(file, 'image')
+      if (uploadedImageUrl) {
+        setImage(uploadedImageUrl)
+        console.log('Image uploaded:', uploadedImageUrl)
+      }
+      setIsLoading(false)
+    }
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (message.trim()) {
-      console.log('Message sent:', message)
       const messageCreate: MessageCreate = {
         content: message,
         image: image,
@@ -51,32 +75,6 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
       }
       setMessage('')
       setImage('')
-    }
-  }
-
-  const [listMessages, setListMessages] = useState<Message[]>([])
-
-  useEffect(() => {
-    if (currentChat != null)
-      try {
-        getMessageByChat(currentChat.id).then((data) => {
-          if (data && Array.isArray(data)) setListMessages(data)
-        })
-      } catch (e) {
-        console.log(e)
-      }
-  }, [currentChat])
-
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setIsLoading(true)
-      const uploadedImageUrl = await uploadMedia(file, 'image')
-      if (uploadedImageUrl) {
-        setImage(uploadedImageUrl)
-        console.log('Image uploaded:', uploadedImageUrl)
-      }
-      setIsLoading(false)
     }
   }
 
