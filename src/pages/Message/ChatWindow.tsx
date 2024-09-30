@@ -1,4 +1,4 @@
-import { Favorite, Send } from '@mui/icons-material'
+import { Send } from '@mui/icons-material'
 import {
   Avatar,
   Box,
@@ -16,6 +16,8 @@ import { uploadMedia } from '../../utils/uploadCloudnary'
 import PhotoIcon from '@mui/icons-material/Photo'
 import { createMessage, getMessageByChat } from '../../api/messageApi'
 import MessageItem from '../../components/MessageItem/MessageItem'
+import Stomp from 'stompjs'
+import SockJS from 'sockjs-client'
 
 const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
   currentChat,
@@ -24,6 +26,7 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
   const [listMessages, setListMessages] = useState<Message[]>([])
   const [image, setImage] = useState<string>('')
   const [message, setMessage] = useState<string>('')
+  //const [stompClient, setStompClient] = useState<Stomp.Client | null>(null)
 
   useEffect(() => {
     if (currentChat != null)
@@ -77,6 +80,21 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
       setImage('')
     }
   }
+
+  // useEffect(() => {
+  //   const socket = new SockJS('http://localhost:8080/ws')
+  //   const client = Stomp.over(socket)
+  //   client.connect(
+  //     {},
+  //     () => {
+  //       console.log('Connected to WebSocket')
+  //       setStompClient(client)
+  //     },
+  //     (error) => {
+  //       console.error('Error connecting to WebSocket:', error)
+  //     }
+  //   )
+  // }, [])
 
   return (
     <Box sx={{ display: 'flex', height: '100vh', bgcolor: '#f0f2f5' }}>

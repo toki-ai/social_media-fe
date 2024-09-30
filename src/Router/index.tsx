@@ -7,10 +7,12 @@ import Authentication from '../pages/Authentication/Authentication'
 import AppLayout from '../layout/AppLayout'
 import ErrorPage from '../pages/ErrorPage'
 import PostDetail from '../pages/PostDetail/PostDetail'
+import ChatComponent from '../pages/ChatComponnet'
 
 const publicRoutes = [
   { path: '/login', element: <Authentication /> },
   { path: '/register', element: <Authentication /> },
+  { path: '/chat', element: <ChatComponent /> },
 ]
 
 const router = createBrowserRouter([

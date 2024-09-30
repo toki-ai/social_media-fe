@@ -13,6 +13,7 @@ import { navigationMenu } from './SideBarNavigation'
 import { useNavigate } from 'react-router-dom'
 import { UserContext, UserContextType } from '../../context/userContext'
 import { UserProfile } from '../../interface/UserInterface'
+import ThemeToggleButton from '../ThemeToggleButton/ThemeToggleButton'
 
 const SideBar = () => {
   const navigate = useNavigate()
@@ -92,8 +93,9 @@ const SideBar = () => {
                 }}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <ThemeToggleButton />
+                </MenuItem>
               </Menu>
             </Box>
           </Box>
