@@ -27,7 +27,7 @@ export interface UserProfile {
 export interface UserUpdate {
   firstName: string
   lastName: string
-  gender: string
+  image: string
 }
 
 export interface AuthState {
