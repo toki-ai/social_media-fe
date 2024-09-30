@@ -46,7 +46,6 @@ const Register = () => {
       })
       .catch((error) => {
         console.error('Registration failed', error)
-        // Xử lý lỗi nếu cần
       })
   }
 
@@ -60,7 +59,7 @@ const Register = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ handleSubmit }) => (
+        {({ handleSubmit }: { handleSubmit: () => void }) => (
           <Form onSubmit={handleSubmit}>
             <Box sx={{ mb: 2 }}>
               <Field

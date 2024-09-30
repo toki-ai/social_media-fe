@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { LoginData, RegisterData } from '../interface/UserInterface'
 
-const apiUrl = import.meta.env.VITE_API_URL
+const apiUrl = process.env.REACT_APP_BASE_API_URL
 
 export const signIn = async (signInData: LoginData): Promise<void> => {
   try {

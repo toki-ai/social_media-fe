@@ -1,7 +1,7 @@
-import axios from "axios"
-import { UserProfile } from "../interface/UserInterface"
+import axios from 'axios'
+import { UserProfile } from '../interface/UserInterface'
 
-const baseURL = import.meta.env.VITE_API_URL
+const baseURL = process.env.REACT_APP_BASE_API_URL
 
 export const searchUser = async (
   query: string

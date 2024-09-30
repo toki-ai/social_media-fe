@@ -36,7 +36,7 @@ const EditProfileModal = ({
     const data: UserUpdate = {
       firstName: firstName,
       lastName: lastName,
-      gender: gender,
+      image: gender,
     }
     updateUserProfile(data)
     handleClose()

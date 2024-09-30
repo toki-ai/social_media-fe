@@ -16,6 +16,8 @@ import { uploadMedia } from '../../utils/uploadCloudnary'
 import PhotoIcon from '@mui/icons-material/Photo'
 import { createMessage, getMessageByChat } from '../../api/messageApi'
 import MessageItem from '../../components/MessageItem/MessageItem'
+import Stomp from 'stompjs'
+import SockJS from 'sockjs-client'
 
 const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
   currentChat,
@@ -24,6 +26,7 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
   const [listMessages, setListMessages] = useState<Message[]>([])
   const [image, setImage] = useState<string>('')
   const [message, setMessage] = useState<string>('')
+  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null)
 
   useEffect(() => {
     if (currentChat != null)
@@ -35,6 +38,22 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
         console.log(e)
       }
   }, [currentChat])
+
+  const baseUrl = process.env.REACT_APP_BASE_API_URL
+
+  useEffect(() => {
+    const socket = new SockJS(`${baseUrl}/ws`)
+    const client = Stomp.over(socket)
+    client.connect(
+      {},
+      () => {
+        setStompClient(client)
+      },
+      (error) => {
+        console.error('Error connecting to WebSocket:', error)
+      }
+    )
+  }, [])
 
   const { user }: { user: UserProfile | null } = useContext(
     UserContext
@@ -66,17 +85,40 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
         image: image,
       }
       if (currentChat != null) {
-        createMessage(messageCreate, currentChat.id).then((data) => {
-          if (data) {
-            const newMessage: Message = data
-            setListMessages((prevMessages) => [...prevMessages, newMessage])
+        createMessage(messageCreate, currentChat.id, sendMessageToServer).then(
+          (data) => {
+            if (data) {
+              const newMessage: Message = data
+              setMessage('')
+              setImage('')
+            }
           }
-        })
+        )
       }
-      setMessage('')
-      setImage('')
     }
   }
+  const sendMessageToServer = (newMessage: Message) => {
+    if (stompClient && newMessage) {
+      stompClient.send(
+        `/app/chat/${currentChat?.id.toString()}`,
+        {},
+        JSON.stringify(newMessage)
+      )
+    }
+  }
+
+  useEffect(() => {
+    if (stompClient && currentChat && currentChat.users) {
+      const subscription = stompClient.subscribe(
+        `/user/${currentChat.id}/private`,
+        (message) => {
+          const newMessage = JSON.parse(message.body) as Message
+          setListMessages((prevMessages) => [...prevMessages, newMessage])
+        }
+      )
+      return () => subscription.unsubscribe()
+    }
+  }, [stompClient, currentChat])
 
   return (
     <Box sx={{ display: 'flex', height: '100vh', bgcolor: '#f0f2f5' }}>
@@ -113,9 +155,9 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
             }}
           >
             {listMessages.length > 0 &&
-              listMessages.map((message) => (
+              listMessages.map((message, index) => (
                 <MessageItem
-                  key={message.id}
+                  key={index}
                   message={message}
                   isResMessage={resUser?.id === message.sender.id}
                 />

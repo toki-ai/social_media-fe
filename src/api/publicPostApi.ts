@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Post } from '../interface/PostInterface'
 import { UserProfile } from '../interface/UserInterface'
 
-const baseURL = import.meta.env.VITE_API_URL
+const baseURL = process.env.REACT_APP_BASE_API_URL
 
 export const getAllPost = async (): Promise<Post[] | null> => {
   try {

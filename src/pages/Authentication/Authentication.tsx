@@ -1,5 +1,5 @@
 import { Card, Grid, Typography } from '@mui/material'
-import backgroundImage from '/assets/sceen.jpg'
+// import backgroundImage from '../../../public/assets/sceen.jpg'
 import Login from './Login'
 import Register from './Register'
 import { useLocation } from 'react-router-dom'
@@ -13,7 +13,7 @@ const Authentication = () => {
         item
         xs={7}
         sx={{
-          backgroundImage: `url(${backgroundImage})`,
+          backgroundImage: `url(../../../public/assets/sceen.jpg)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

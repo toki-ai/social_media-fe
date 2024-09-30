@@ -8,7 +8,7 @@ const popularUsers: number[] = [1, 2, 3, 4, 5]
 const HomeRight: React.FC = () => {
   return (
     <Box sx={{ paddingRight: 5 }}>
-      <SearchUser />
+      <SearchUser onUserSelect={(user) => console.log(user)} />
       <Card sx={{ padding: 3 }}>
         <Box
           sx={{

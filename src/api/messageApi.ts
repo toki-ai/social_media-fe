@@ -3,7 +3,8 @@ import { apiCaller } from './apiCaller'
 
 export const createMessage = async (
   message: MessageCreate,
-  chatId: string
+  chatId: string,
+  sendMessageToServer: (message: Message) => void
 ): Promise<Message | null> => {
   try {
     const response = await apiCaller.post<Message>(
@@ -12,6 +13,7 @@ export const createMessage = async (
     )
     if (response) {
       const data: Message = response
+      sendMessageToServer(data)
       return data
     }
   } catch (error: any) {

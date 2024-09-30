@@ -4,7 +4,7 @@ import axios, {
   AxiosHeaders,
 } from 'axios'
 
-const baseURL = import.meta.env.VITE_API_URL
+const baseURL = process.env.REACT_APP_BASE_API_URL
 
 const api = axios.create({
   baseURL: baseURL,
