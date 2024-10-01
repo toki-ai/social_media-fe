@@ -4,6 +4,7 @@ import { getUserProfile } from '../api/userApi'
 
 export interface UserContextType {
   user: UserProfile | null
+  setUser: (user: UserProfile | null) => void
 }
 
 export const UserContext = createContext<UserContextType | null>(null)
@@ -25,6 +26,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   }, [])
   return (
-    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
   )
 }

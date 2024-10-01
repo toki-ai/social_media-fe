@@ -18,7 +18,7 @@ export interface UserProfile {
   firstName: string
   lastName: string
   email: string
-  gender: string
+  image: string
   following: string[]
   followers: string[]
   saved: Post[]

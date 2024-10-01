@@ -9,9 +9,14 @@ import {
   RadioGroup,
   FormControlLabel,
   FormLabel,
+  Backdrop,
+  CircularProgress,
+  Avatar,
 } from '@mui/material'
 import { UserProfile, UserUpdate } from '../../interface/UserInterface'
 import { updateUserProfile } from '../../api/userApi'
+import { uploadMedia } from '../../utils/uploadCloudnary'
+import PhotoIcon from '@mui/icons-material/Photo'
 
 const EditProfileModal = ({
   open,
@@ -24,7 +29,21 @@ const EditProfileModal = ({
 }) => {
   const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
-  const [gender, setGender] = useState(user.gender)
+  const [image, setImage] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setIsLoading(true)
+      const uploadedImageUrl = await uploadMedia(file, 'image')
+      if (uploadedImageUrl) {
+        setImage(uploadedImageUrl)
+        console.log('Image uploaded:', uploadedImageUrl)
+      }
+      setIsLoading(false)
+    }
+  }
 
   const handleSubmit = () => {
     if (firstName === '') {
@@ -36,7 +55,7 @@ const EditProfileModal = ({
     const data: UserUpdate = {
       firstName: firstName,
       lastName: lastName,
-      image: gender,
+      image: image,
     }
     updateUserProfile(data)
     handleClose()
@@ -61,6 +80,47 @@ const EditProfileModal = ({
         <Typography variant='h6' mb={2}>
           Edit Profile
         </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
+          <Avatar
+            sx={{
+              boxShadow: 3,
+              width: '100px',
+              height: '100px',
+              objectFit: 'cover',
+              borderRadius: '50%',
+            }}
+            src={image ? image : user.image}
+          ></Avatar>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              paddingY: '10px',
+            }}
+          >
+            <input
+              accept='image/*'
+              type='file'
+              id='image-input'
+              style={{
+                display: 'none',
+              }}
+              onChange={handleImageChange}
+            />
+            <label htmlFor='image-input'>
+              <Button variant='outlined' size='small'>
+                Change Avatar
+              </Button>
+            </label>
+          </Box>
+        </Box>
 
         <TextField
           label='First Name'
@@ -76,17 +136,6 @@ const EditProfileModal = ({
           onChange={(e) => setLastName(e.target.value)}
           sx={{ mb: 2 }}
         />
-
-        <FormLabel component='legend'>Gender</FormLabel>
-        <RadioGroup
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          sx={{ mb: 2 }}
-        >
-          <FormControlLabel value='male' control={<Radio />} label='Male' />
-          <FormControlLabel value='female' control={<Radio />} label='Female' />
-        </RadioGroup>
-
         <Box display='flex' justifyContent='flex-end'>
           <Button onClick={handleClose} sx={{ mr: 1 }}>
             Cancel
@@ -95,6 +144,16 @@ const EditProfileModal = ({
             Save
           </Button>
         </Box>
+        <Backdrop
+          sx={(theme) => ({
+            color: '#fff',
+            zIndex: theme.zIndex.drawer + 1,
+          })}
+          open={isLoading}
+          onClick={handleClose}
+        >
+          <CircularProgress color='inherit' />
+        </Backdrop>
       </Box>
     </Modal>
   )

@@ -2,11 +2,14 @@ import { Avatar, Box, Typography } from '@mui/material'
 import React from 'react'
 import { UserProfile } from '../../interface/UserInterface'
 import { Chat } from '../../interface/ChatInterface'
+import { useTheme } from '@mui/material/styles'
 
 const UserChatCard: React.FC<{
   user: UserProfile
   isCurrentChat: boolean
 }> = ({ user, isCurrentChat }) => {
+  const theme = useTheme()
+  
   return (
     <Box
       sx={{
@@ -14,8 +17,8 @@ const UserChatCard: React.FC<{
         display: 'flex',
         alignItems: 'center',
         cursor: 'pointer',
-        '&:hover': { backgroundColor: '#f5f5f5' },
-        bgcolor: isCurrentChat ? 'gray' : 'white',
+        '&:hover': { backgroundColor: theme.palette.action.hover },
+        bgcolor: isCurrentChat ? 'gray' : '',
       }}
     >
       <Avatar />

@@ -1,6 +1,6 @@
-const cloud_name: string = process.env.CLOUDINARY_CLOUD_NAME as string
+const cloud_name: string = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME as string
 const upload_preset: string = process.env
-  .VITE_CLOUDINARY_UPLOAD_PRESET as string
+  .REACT_APP_CLOUDINARY_UPLOAD_PRESET as string
 
 export const uploadMedia = async (
   pics: File | null,

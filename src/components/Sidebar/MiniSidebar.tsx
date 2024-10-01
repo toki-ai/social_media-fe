@@ -6,16 +6,19 @@ import {
   MenuItem,
   Box,
   Typography,
+  useTheme,
 } from '@mui/material'
 import SortIcon from '@mui/icons-material/Sort'
 import React from 'react'
 import { navigationMenu } from './SideBarNavigation'
 import { useNavigate } from 'react-router-dom'
+import MoreSelectorSideBar from './MoreSelectorSideBar'
 
 const MiniSideBar = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const navigate = useNavigate()
+  const theme = useTheme()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -26,9 +29,23 @@ const MiniSideBar = () => {
   }
 
   return (
-    <Card className='h-screen flex flex-col justify-between py-5 fixed pr-20'>
-      <Box className='space-y-8 pl-7'>
-        <Box className='space-y-10 pt-5'>
+    <Card
+      sx={{
+        height: '100vh',
+        width: '100%',
+        paddingY: '30px',
+      }}
+    >
+      <Box
+        sx={{
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: 'column',
+        }}
+      >
+        <Box sx={{ height: '10%' }}></Box>
+        <Box sx={{ height: '75%' }}>
           {navigationMenu.map((item, index) => (
             <Box
               key={index}
@@ -36,8 +53,14 @@ const MiniSideBar = () => {
                 display: 'flex',
                 cursor: 'pointer',
                 alignItems: 'center',
-                marginTop: '30px',
-                paddingLeft: '20px',
+                padding: '17px',
+                justifyContent: 'center',
+                borderRadius: '5px',
+                '&:hover': { backgroundColor: theme.palette.action.hover },
+                backgroundColor:
+                  item.title == 'Messages'
+                    ? theme.palette.action.hover
+                    : 'transparent',
               }}
               onClick={() => {
                 if (item.path) navigate(item.path)
@@ -47,39 +70,16 @@ const MiniSideBar = () => {
             </Box>
           ))}
         </Box>
-        <Divider sx={{ paddingTop: '20px' }} />
-        <Box className='cursor-pointer flex space-x-3 items-center'>
-          <SortIcon />
-          <Box>
-            <Button
-              id='demo-positioned-button'
-              aria-controls={open ? 'demo-positioned-menu' : undefined}
-              aria-haspopup='true'
-              aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
-            >
-              More
-            </Button>
-            <Menu
-              id='demo-positioned-menu'
-              aria-labelledby='demo-positioned-button'
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
-            </Menu>
-          </Box>
+        <Box
+          sx={{
+            height: '15%',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            flexDirection: 'column',
+            paddingTop: '10px',
+          }}
+        >
+          <MoreSelectorSideBar isFull={false} />
         </Box>
       </Box>
     </Card>

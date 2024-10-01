@@ -27,7 +27,7 @@ const ProfileHeader: React.FC<{
       >
         <Avatar
           sx={{ width: '10rem', height: '10rem' }}
-          src='https://i.pinimg.com/280x280_RS/b4/19/fd/b419fd337d42a639bba952a351f22d73.jpg'
+          src={user.image ? user.image : ''}
         />
       </Box>
       <Box width='70%' pl={2}>

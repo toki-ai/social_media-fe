@@ -58,13 +58,12 @@ const UserList: React.FC<UserListProps> = ({ setCurrentChat, currentChat }) => {
 
   return (
     <Grid item container lg={12}>
-      <Grid item lg={2}>
+      <Grid item lg={1.5} sx={{ position: 'relative' }}>
         <MiniSideBar />
       </Grid>
-      <Grid item lg={10}>
+      <Grid item lg={10.5}>
         <Box
           sx={{
-            bgcolor: 'white',
             borderRight: '1px solid #ddd',
             display: 'flex',
             flexDirection: 'column',
