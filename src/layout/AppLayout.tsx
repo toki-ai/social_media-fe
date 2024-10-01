@@ -21,7 +21,7 @@ const AppLayout: React.FC = () => {
             lg={isMessagePage ? 12 : 10}
             sx={{ display: 'flex', justifyContent: 'center' }}
           >
-            <Box sx={isMessagePage ? { width: '100%' } : { width: '80%' }}>
+            <Box sx={isMessagePage ? { width: '100%' } : { width: '85%' }}>
               <Outlet />
             </Box>
           </Grid>

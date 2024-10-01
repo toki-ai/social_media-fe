@@ -4,6 +4,7 @@ import * as Yup from 'yup'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { LoginData } from '../../interface/UserInterface'
 import { signIn } from '../../api/authApi'
+import { ErrorMessageStyled } from '../../components/ErrorMessageStyled/ErrorMessageStyled'
 
 const initialValues = {
   email: '',
@@ -31,9 +32,6 @@ const Login = () => {
 
   return (
     <Box sx={{ maxWidth: 400, margin: 'auto', padding: 2 }}>
-      <Typography variant='h5' component='h1' gutterBottom>
-        Login
-      </Typography>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -41,7 +39,14 @@ const Login = () => {
       >
         {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <Box className='space-y-5'>
+            <Box
+              sx={{
+                height: '90px',
+                display: 'flex',
+                flexDirection: 'column',
+                paddingBottom: '20px',
+              }}
+            >
               <Field
                 as={TextField}
                 name='email'
@@ -51,13 +56,16 @@ const Login = () => {
                 fullWidth
                 label='Email'
               />
-              <ErrorMessage
-                name='email'
-                component='div'
-                className='text-red-500'
-              />
+              <ErrorMessage name='email' component={ErrorMessageStyled} />
             </Box>
-            <Box className='space-y-5'>
+            <Box
+              sx={{
+                height: '90px',
+                display: 'flex',
+                flexDirection: 'column',
+                paddingBottom: '10px',
+              }}
+            >
               <Field
                 as={TextField}
                 name='password'
@@ -67,11 +75,7 @@ const Login = () => {
                 fullWidth
                 label='Password'
               />
-              <ErrorMessage
-                name='password'
-                component='div'
-                className='text-red-500'
-              />
+              <ErrorMessage name='password' component={ErrorMessageStyled} />
             </Box>
             <Button
               sx={{ padding: '0.8rem 0rem' }}
@@ -85,7 +89,9 @@ const Login = () => {
           </Form>
         )}
       </Formik>
-      <Box className='pt-5 flex justify-center items-center gap-2'>
+      <Box
+        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
         <Typography>Don't have an account?</Typography>
         <Button
           variant='text'
@@ -93,6 +99,7 @@ const Login = () => {
           onClick={() => {
             navigate('/register')
           }}
+          sx={{}}
         >
           Register
         </Button>

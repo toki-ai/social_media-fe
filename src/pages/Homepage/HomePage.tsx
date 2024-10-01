@@ -5,7 +5,7 @@ import HomeRight from '../../components/HomeRight/HomeRight'
 const Homepage: React.FC = () => {
   return (
     <Box width='100%'>
-      <Grid container>
+      <Grid container sx={{ paddingY: 4 }}>
         <Grid item lg={8} sx={{ display: 'flex', justifyContent: 'center' }}>
           <MiddlePart />
         </Grid>

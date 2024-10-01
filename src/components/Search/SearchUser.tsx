@@ -5,6 +5,10 @@ import {
   Card,
   CardContent,
   Typography,
+  Box,
+  Avatar,
+  Divider,
+  useTheme,
 } from '@mui/material'
 import { UserProfile } from '../../interface/UserInterface'
 import { searchUser } from '../../api/publicUserApi'
@@ -17,9 +21,12 @@ const SearchUser: React.FC<SearchBarProps> = ({ onUserSelect }) => {
   const [searchValue, setSearchValue] = useState<string>('')
   const [userList, setUserList] = useState<UserProfile[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const theme = useTheme()
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('Input change:', event.target.value)
+    if (event.target.value == '') {
+      setUserList([])
+    }
     const query = event.target.value
     setSearchValue(query)
 
@@ -55,24 +62,51 @@ const SearchUser: React.FC<SearchBarProps> = ({ onUserSelect }) => {
             <CircularProgress color='inherit' size={20} />
           ) : null,
         }}
-        sx={{ position: 'relative' }}
+        sx={{
+          position: 'relative',
+          width: '100%',
+        }}
       />
-      {userList &&
-        userList.map((user, index) => (
-          <Card
-            key={index}
-            onClick={() => handleSelectUser(user)}
-            sx={{
-              position: 'absolute',
-              paddingTop: `${index * 50}px`,
-              zIndex: `${userList.length - index + 1}`,
-            }}
-          >
-            <CardContent>
-              <Typography variant='body1'>{user.firstName}</Typography>
-            </CardContent>
-          </Card>
-        ))}
+      {userList.length > 0 && (
+        <Card
+          sx={{
+            position: 'absolute',
+            width: '300px',
+            zIndex: 2,
+          }}
+        >
+          {userList.map((user, index) => (
+            <Box
+              key={index}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                paddingY: '15px',
+                paddingX: '20px',
+                cursor: 'pointer',
+                '&:hover': {
+                  bgcolor: theme.palette.action.hover,
+                },
+              }}
+              onClick={() => handleSelectUser(user)}
+            >
+              <Avatar src={user.image}></Avatar>
+              <Typography
+                variant='body1'
+                sx={{
+                  '&:active': {
+                    textDecoration: 'underline',
+                  },
+                }}
+              >
+                {user.firstName + '' + user.lastName}
+              </Typography>
+              <Divider />
+            </Box>
+          ))}
+        </Card>
+      )}
     </>
   )
 }

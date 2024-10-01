@@ -10,7 +10,6 @@ export interface RegisterData {
   lastName: string
   email: string
   password: string
-  gender: string
 }
 
 export interface UserProfile {

@@ -4,13 +4,20 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#1976d2',
+      main: '#0f9bf7',
     },
     secondary: {
       main: '#dc004e',
     },
+    error: {
+      main: '#e83b46',
+    },
+    grey: {
+      500: '#747474',
+    },
     text: {
       primary: '#000000',
+      secondary: '#4c4c4c',
     },
   },
   typography: {
@@ -19,6 +26,10 @@ export const lightTheme = createTheme({
       fontFamily: "'Dancing Script', cursive",
       fontSize: '16',
       fontWeight: 700,
+    },
+    h2: {
+      fontSize: '16',
+      fontWeight: 400,
     },
     h3: {
       fontSize: '17px',
@@ -42,8 +53,18 @@ export const darkTheme = createTheme({
       default: '#121212',
       paper: '#1d1d1d',
     },
+    error: {
+      main: '#e83b46',
+    },
+    grey: {
+      500: '#747474',
+    },
     action: {
       hover: '#262626',
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: '#4c4c4c',
     },
   },
   typography: {

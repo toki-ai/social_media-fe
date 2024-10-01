@@ -38,3 +38,19 @@ export const getUserById = async (
   }
   return null
 }
+
+export const getAllUser = async (): Promise<UserProfile[] | null> => {
+  try {
+    const response = await axios.get(`${baseURL}/users`)
+    if (response) {
+      const data: UserProfile[] = response.data
+      return data
+    }
+  } catch (error: any) {
+    console.error(
+      'Error: ',
+      error.response ? error.response.data : error.message
+    )
+  }
+  return null
+}

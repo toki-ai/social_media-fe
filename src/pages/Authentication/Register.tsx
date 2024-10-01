@@ -8,18 +8,17 @@ import {
   Box,
 } from '@mui/material'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-import { useState } from 'react'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import { RegisterData } from '../../interface/UserInterface'
 import { signUp } from '../../api/authApi'
+import { ErrorMessageStyled } from '../../components/ErrorMessageStyled/ErrorMessageStyled'
 
 const initialValues: RegisterData = {
   firstName: '',
   lastName: '',
   email: '',
   password: '',
-  gender: '',
 }
 
 const validationSchema = Yup.object({
@@ -34,11 +33,9 @@ const validationSchema = Yup.object({
 })
 
 const Register = () => {
-  const [gender, setGender] = useState('')
   const navigate = useNavigate()
 
   const handleSubmit = (values: RegisterData) => {
-    values.gender = gender
     signUp(values)
       .then(() => {
         console.log('Register successful', values)
@@ -51,9 +48,6 @@ const Register = () => {
 
   return (
     <Box sx={{ maxWidth: 400, margin: 'auto', padding: 2 }}>
-      <Typography variant='h5' component='h1' gutterBottom>
-        Register
-      </Typography>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -61,7 +55,14 @@ const Register = () => {
       >
         {({ handleSubmit }: { handleSubmit: () => void }) => (
           <Form onSubmit={handleSubmit}>
-            <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                height: '90px',
+                display: 'flex',
+                flexDirection: 'column',
+                paddingBottom: '10px',
+              }}
+            >
               <Field
                 as={TextField}
                 name='firstName'
@@ -70,13 +71,16 @@ const Register = () => {
                 fullWidth
                 label='First Name'
               />
-              <ErrorMessage
-                name='firstName'
-                component='div'
-                className='text-red-500'
-              />
+              <ErrorMessage name='firstName' component={ErrorMessageStyled} />
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                height: '90px',
+                display: 'flex',
+                flexDirection: 'column',
+                paddingBottom: '10px',
+              }}
+            >
               <Field
                 as={TextField}
                 name='lastName'
@@ -85,13 +89,16 @@ const Register = () => {
                 fullWidth
                 label='Last Name'
               />
-              <ErrorMessage
-                name='lastName'
-                component='div'
-                className='text-red-500'
-              />
+              <ErrorMessage name='lastName' component={ErrorMessageStyled} />
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                height: '90px',
+                display: 'flex',
+                flexDirection: 'column',
+                paddingBottom: '10px',
+              }}
+            >
               <Field
                 as={TextField}
                 name='email'
@@ -100,13 +107,16 @@ const Register = () => {
                 fullWidth
                 label='Email'
               />
-              <ErrorMessage
-                name='email'
-                component='div'
-                className='text-red-500'
-              />
+              <ErrorMessage name='email' component={ErrorMessageStyled} />
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                height: '90px',
+                display: 'flex',
+                flexDirection: 'column',
+                paddingBottom: '10px',
+              }}
+            >
               <Field
                 as={TextField}
                 name='password'
@@ -116,31 +126,7 @@ const Register = () => {
                 type='password'
                 label='Password'
               />
-              <ErrorMessage
-                name='password'
-                component='div'
-                className='text-red-500'
-              />
-            </Box>
-            <Box sx={{ mb: 2 }}>
-              <RadioGroup
-                aria-labelledby='gender'
-                value={gender}
-                onChange={(event) => {
-                  setGender(event.target.value)
-                }}
-              >
-                <FormControlLabel
-                  value='female'
-                  control={<Radio />}
-                  label='Female'
-                />
-                <FormControlLabel
-                  value='male'
-                  control={<Radio />}
-                  label='Male'
-                />
-              </RadioGroup>
+              <ErrorMessage name='password' component={ErrorMessageStyled} />
             </Box>
             <Button type='submit' variant='contained' color='primary' fullWidth>
               Register
@@ -148,7 +134,9 @@ const Register = () => {
           </Form>
         )}
       </Formik>
-      <Box className='pt-5 flex justify-center items-center gap-2'>
+      <Box
+        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
         <Typography>Have an account?</Typography>
         <Button
           variant='text'
