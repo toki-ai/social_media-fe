@@ -6,6 +6,7 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  Divider,
   IconButton,
   Typography,
 } from '@mui/material'
@@ -114,6 +115,7 @@ const PostCard: React.FC<{
           </Box>
         </CardActions>
       </Box>
+      <Divider />
     </Card>
   )
 }

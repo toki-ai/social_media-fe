@@ -1,7 +1,12 @@
 import { Avatar, Button, Box, Typography } from '@mui/material'
 import { UserProfile } from '../../interface/UserInterface'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import EditProfileModal from '../../components/EditProfileModal/EditProfileModal'
+import { useNavigate } from 'react-router-dom'
+import { getChatByTwoUser } from '../../api/chatApi'
+import { followUser } from '../../api/userApi'
+import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone'
+import { UserContext, UserContextType } from '../../context/userContext'
 
 const ProfileHeader: React.FC<{
   user: UserProfile
@@ -9,6 +14,18 @@ const ProfileHeader: React.FC<{
   isEditMode: boolean
 }> = ({ user, postNumber, isEditMode }) => {
   const [open, setOpen] = useState(false)
+  const navigate = useNavigate()
+  const userContext = useContext(UserContext) as UserContextType
+
+  const [isUserFollowing, setIsUserFollowing] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (userContext.user) {
+      const check = user.followers.includes(userContext.user.id)
+      setIsUserFollowing(check)
+      console.log('isUserFollowing:', isUserFollowing)
+    }
+  }, [])
 
   const handleOpenModal = () => {
     setOpen(true)
@@ -17,6 +34,27 @@ const ProfileHeader: React.FC<{
   const handleCloseModal = () => {
     setOpen(false)
   }
+
+  const handleChat = () => {
+    getChatByTwoUser(user.id).then((data) => {
+      if (data) {
+        navigate('/messages', { state: { currentChat: data } })
+      }
+    })
+  }
+
+  const handleFollow = () => {
+    if (userContext.user) {
+      followUser(user.id).then((data) => {
+        if (data) {
+          window.location.reload()
+        }
+      })
+    } else {
+      navigate('/login')
+    }
+  }
+
   return (
     <Box display='flex' width='100%' mt={5}>
       <Box
@@ -82,8 +120,10 @@ const ProfileHeader: React.FC<{
                   textTransform: 'none',
                   marginLeft: '10px',
                 }}
+                onClick={handleFollow}
               >
                 Following
+                {isUserFollowing ? <FileDownloadDoneIcon /> : ''}
               </Button>
               <Button
                 variant='contained'
@@ -95,6 +135,7 @@ const ProfileHeader: React.FC<{
                   textTransform: 'none',
                   marginLeft: '10px',
                 }}
+                onClick={handleChat}
               >
                 Message
               </Button>

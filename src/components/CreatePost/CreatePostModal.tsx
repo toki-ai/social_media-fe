@@ -17,10 +17,12 @@ import { getUserProfile } from '../../api/userApi'
 import { uploadMedia } from '../../utils/uploadCloudnary'
 import { Post, PostCreate } from '../../interface/PostInterface'
 import { createPost } from '../../api/postApi'
+import { UserProfile } from '../../interface/UserInterface'
 
 interface CreatePostModalProps {
   open: boolean
   handleClose: () => void
+  user: UserProfile
 }
 
 const initialPostCreate: PostCreate = {
@@ -32,6 +34,7 @@ const initialPostCreate: PostCreate = {
 const CreatePostModal: React.FC<CreatePostModalProps> = ({
   open,
   handleClose,
+  user,
 }) => {
   const [postContent, setPostContent] = useState<string>('')
   const [userName, setUserName] = useState<string>('')
@@ -95,21 +98,6 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
     }
   }
 
-  useEffect(() => {
-    try {
-      getUserProfile().then((res) => {
-        if (res != null)
-          setUserName(
-            '@' +
-              res.firstName.toLocaleLowerCase() +
-              '_' +
-              res.lastName.toLocaleLowerCase()
-          )
-      })
-    } catch (err) {
-      console.log(err)
-    }
-  })
   return (
     <Modal
       open={open}
@@ -145,9 +133,12 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
               justifyContent: 'left',
             }}
           >
-            <Avatar />
+            <Avatar src={user.image} />
             <Typography variant='body1' marginLeft={1}>
-              {userName}
+              {'@' +
+                user.firstName.toLocaleLowerCase() +
+                '_' +
+                user.lastName.toLocaleLowerCase()}
             </Typography>
           </Box>
           <TextField

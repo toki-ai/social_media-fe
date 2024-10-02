@@ -17,9 +17,13 @@ const HomeRight: React.FC = () => {
     if (currentUser) {
       getAllUser().then((data) => {
         if (data) {
-          const filteredUsers = data.filter(
-            (user) => user.id !== currentUser?.user?.id
-          )
+          const filteredUsers = data.filter((user) => {
+            return (
+              user.id !== currentUser?.user?.id &&
+              currentUser?.user?.id !== undefined &&
+              !user.followers.includes(currentUser.user.id)
+            )
+          })
           const firstFiveUsers = filteredUsers.slice(0, 5)
           setUserList(firstFiveUsers)
         }
@@ -58,7 +62,7 @@ const HomeRight: React.FC = () => {
         </Box>
         <Box sx={{ marginTop: 1 }}>
           {userList?.map((user, index) => (
-              <SuggestUserCard user={user} key={index} />
+            <SuggestUserCard user={user} key={index} />
           ))}
         </Box>
       </Box>

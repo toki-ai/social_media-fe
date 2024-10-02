@@ -1,10 +1,24 @@
 import { Avatar, Button, Box, Typography, useTheme } from '@mui/material'
 import { UserProfile } from '../../interface/UserInterface'
 import { useNavigate } from 'react-router-dom'
+import { useContext, useState } from 'react'
+import { UserContext } from '../../context/userContext'
+import { followUser } from '../../api/userApi'
 
 const SuggestUserCard: React.FC<{ user: UserProfile }> = ({ user }) => {
   const theme = useTheme()
   const navigate = useNavigate()
+  const userContext = useContext(UserContext)
+  const [isClicked, setIsClicked] = useState(false)
+
+  const handleFollow = () => {
+    setIsClicked(!isClicked)
+    if (userContext && userContext.user) {
+      followUser(user.id).then((data) => {})
+    } else {
+      navigate('/login')
+    }
+  }
   return (
     <Box
       sx={{
@@ -51,9 +65,13 @@ const SuggestUserCard: React.FC<{ user: UserProfile }> = ({ user }) => {
           fontSize: '12px',
           fontWeight: '700',
           paddingY: '10px',
+          color: !isClicked
+            ? theme.palette.primary.main
+            : theme.palette.grey[500],
         }}
+        onClick={handleFollow}
       >
-        Follow
+        {!isClicked ? 'Follow' : 'Following'}
       </Button>
     </Box>
   )

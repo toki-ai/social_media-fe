@@ -30,3 +30,15 @@ export const getChatByUser = async (): Promise<Chat[] | null> => {
     return null
   }
 }
+
+export const getChatByTwoUser = async (
+  resUserId: string
+): Promise<Chat | null> => {
+  try {
+    const response = await apiCaller.get<Chat>(`/chats/userChats/${resUserId}`)
+    return response
+  } catch (err) {
+    console.log('Error: ' + err)
+    return null
+  }
+}

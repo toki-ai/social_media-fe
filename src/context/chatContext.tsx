@@ -1,6 +1,6 @@
 import React, { createContext, useEffect } from 'react'
 import { Chat } from '../interface/ChatInterface'
-import { getChatByUser } from '../api/chat'
+import { getChatByUser } from '../api/chatApi'
 
 export type ChatContextType = {
   chats: Chat[]

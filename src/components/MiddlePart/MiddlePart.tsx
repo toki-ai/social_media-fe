@@ -1,4 +1,11 @@
-import { Avatar, Box, Card, IconButton, InputBase } from '@mui/material'
+import {
+  Avatar,
+  Box,
+  Card,
+  Divider,
+  IconButton,
+  InputBase,
+} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 import VideocamIcon from '@mui/icons-material/Videocam'
@@ -56,49 +63,60 @@ const MiddlePart = () => {
         ))}
       </Box>
       {user != null && (
-        <Card sx={{ padding: 2, marginTop: 2, cursor: 'pointer' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar sx={{ margin: '0 10px' }}>
-              {user.lastName.charAt(0).toUpperCase()}
-            </Avatar>
-            <InputBase
-              readOnly
-              placeholder='What do you want to share?'
+        <Box>
+          <Divider sx={{ marginTop: 2 }} />
+          <Box sx={{ paddingTop: 3, cursor: 'pointer' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Avatar sx={{ margin: '0 10px' }} src={user.image} />
+              <InputBase
+                readOnly
+                placeholder='What do you want to share?'
+                sx={{
+                  paddingLeft: 1,
+                  borderRadius: '20px',
+                  backgroundColor: 'transparent',
+                  width: '90%',
+                  border: '1px solid lightgray',
+                  height: '40px',
+                }}
+                onClick={handleOpenCreatePostModal}
+              />
+            </Box>
+            <Box
               sx={{
-                paddingLeft: 1,
-                borderRadius: '20px',
-                backgroundColor: 'transparent',
-                width: '90%',
-                border: '1px solid lightgray',
-                height: '40px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginTop: 2,
               }}
-              onClick={handleOpenCreatePostModal}
-            />
+            >
+              <IconButton color='primary' onClick={handleOpenCreatePostModal}>
+                <AddPhotoAlternateIcon />
+              </IconButton>
+              <span>Media</span>
+              <IconButton color='primary' onClick={handleOpenCreatePostModal}>
+                <VideocamIcon />
+              </IconButton>
+              <span>Media</span>
+            </Box>
           </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginTop: 2,
-            }}
-          >
-            <IconButton color='primary' onClick={handleOpenCreatePostModal}>
-              <AddPhotoAlternateIcon />
-            </IconButton>
-            <span>Media</span>
-            <IconButton color='primary' onClick={handleOpenCreatePostModal}>
-              <VideocamIcon />
-            </IconButton>
-            <span>Media</span>
-          </Box>
-        </Card>
+          <Divider />
+        </Box>
       )}
       <Box
         sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 2 }}
       >
         {listPost.map((item: Post, index: number) => (
-          <Box sx={{ marginBottom: 2 }} key={index}>
-            <PostCard post={item} user={user} />
+          <Box
+            sx={{
+              marginBottom: 2,
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+            key={index}
+          >
+            <Box sx={{ width: '80%' }}>
+              <PostCard post={item} user={user} />
+            </Box>
           </Box>
         ))}
         {user != null && (
@@ -106,6 +124,7 @@ const MiddlePart = () => {
             <CreatePostModal
               open={open}
               handleClose={handleCloseCreatePostModal}
+              user={user}
             />
           </Box>
         )}

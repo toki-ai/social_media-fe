@@ -4,9 +4,14 @@ import ChatWindow from './ChatWindow'
 import { ChatProvider } from '../../context/chatContext'
 import { Chat } from '../../interface/ChatInterface'
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 const Message = () => {
-  const [currentChat, setCurrentChat] = useState<Chat | null>(null)
+  const location = useLocation()
+  const [currentChat, setCurrentChat] = useState<Chat | null>(
+    location.state?.currentChat || null
+  )
+
   return (
     <ChatProvider>
       <Grid container>

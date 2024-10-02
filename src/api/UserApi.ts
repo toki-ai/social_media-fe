@@ -30,3 +30,19 @@ export const updateUserProfile = async (
     return null
   }
 }
+
+export const followUser = async (
+  userId: string
+): Promise<UserProfile | null> => {
+  try {
+    const response = await apiCaller.put<UserProfile>(`/users/follow/${userId}`)
+    const updatedData: UserProfile = response
+    return updatedData
+  } catch (error: any) {
+    console.error(
+      'Error: ',
+      error.response ? error.response.data : error.message
+    )
+    return null
+  }
+}
