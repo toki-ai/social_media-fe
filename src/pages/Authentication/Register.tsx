@@ -38,7 +38,6 @@ const Register = () => {
   const handleSubmit = (values: RegisterData) => {
     signUp(values)
       .then(() => {
-        console.log('Register successful', values)
         navigate('/')
       })
       .catch((error) => {

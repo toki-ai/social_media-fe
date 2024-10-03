@@ -23,7 +23,6 @@ const ProfileHeader: React.FC<{
     if (userContext.user) {
       const check = user.followers.includes(userContext.user.id)
       setIsUserFollowing(check)
-      console.log('isUserFollowing:', isUserFollowing)
     }
   }, [])
 
@@ -71,7 +70,8 @@ const ProfileHeader: React.FC<{
       <Box width='70%' pl={2}>
         <Box display='flex' alignItems='center'>
           <Typography variant='h6' component='span'>
-            @{user?.firstName.toLowerCase()}_{user?.lastName.toLowerCase()}
+            @{user?.firstName.toLocaleLowerCase()}_
+            {user?.lastName.toLocaleLowerCase()}
           </Typography>
           {isEditMode ? (
             <Box ml={2}>
@@ -145,10 +145,10 @@ const ProfileHeader: React.FC<{
         <Box display='flex' justifyContent='space-between' width='50%' mt={1}>
           <Typography variant='body2'>{postNumber} posts</Typography>
           <Typography variant='body2'>
-            {user.followers.length} followers
+            {user?.followers.length} followers
           </Typography>
           <Typography variant='body2'>
-            {user.following.length} following
+            {user?.following.length} following
           </Typography>
         </Box>
         <Box mt={1}>

@@ -11,7 +11,7 @@ import {
   useTheme,
 } from '@mui/material'
 import { UserProfile } from '../../interface/UserInterface'
-import { searchUser } from '../../api/publicUserApi'
+import { searchUser } from '../../api/publicApi/publicUserApi'
 
 interface SearchBarProps {
   onUserSelect: (user: UserProfile) => void

@@ -1,14 +1,15 @@
 import axios from 'axios'
-import { Post } from '../interface/PostInterface'
-import { UserProfile } from '../interface/UserInterface'
+import { UserProfile } from '../../interface/UserInterface'
 
 const baseURL = process.env.REACT_APP_BASE_API_URL
 
-export const getAllPost = async (): Promise<Post[] | null> => {
+export const searchUser = async (
+  query: string
+): Promise<UserProfile | null> => {
   try {
-    const response = await axios.get(`${baseURL}/posts`)
+    const response = await axios.get(`${baseURL}/users/search?query=${query}`)
     if (response) {
-      const data: Post[] = response.data
+      const data: UserProfile = response.data
       return data
     }
   } catch (error: any) {
@@ -20,11 +21,13 @@ export const getAllPost = async (): Promise<Post[] | null> => {
   return null
 }
 
-export const getPostById = async (postId: string): Promise<Post | null> => {
+export const getUserById = async (
+  userId: string
+): Promise<UserProfile | null> => {
   try {
-    const response = await axios.get(`${baseURL}/posts/${postId}`)
+    const response = await axios.get(`${baseURL}/users/${userId}`)
     if (response) {
-      const data: Post = response.data
+      const data: UserProfile = response.data
       return data
     }
   } catch (error: any) {
@@ -36,11 +39,11 @@ export const getPostById = async (postId: string): Promise<Post | null> => {
   return null
 }
 
-export const getPostByUser = async (userId: string): Promise<Post[] | null> => {
+export const getAllUser = async (): Promise<UserProfile[] | null> => {
   try {
-    const response = await axios.get(`${baseURL}/posts/userPosts/${userId}`)
+    const response = await axios.get(`${baseURL}/users`)
     if (response) {
-      const data: Post[] = response.data
+      const data: UserProfile[] = response.data
       return data
     }
   } catch (error: any) {

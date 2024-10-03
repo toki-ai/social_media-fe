@@ -14,7 +14,7 @@ import { Post } from '../../interface/PostInterface'
 import Comment from '../../components/Comment/Comment'
 import { UserProfile } from '../../interface/UserInterface'
 import { getUserProfile } from '../../api/userApi'
-import { getPostById } from '../../api/publicPostApi'
+import { getPostById } from '../../api/publicApi/publicPostApi'
 
 const PostDetail = () => {
   const { id } = useParams<{ id: string }>()

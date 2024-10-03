@@ -23,8 +23,9 @@ import { useNavigate } from 'react-router-dom'
 import { MultilineTextDisplay } from '../MultilineTextDisplay'
 import { UserProfile } from '../../interface/UserInterface'
 import { isLikeByRecentUser } from '../../utils/isLikeByRecentUser'
-import { likePost } from '../../api/postApi'
+import { likePost, savePost } from '../../api/postApi'
 import { formatDateTime } from '../../utils/formatDateTime'
+import { isSaevByRecentUser } from '../../utils/isSaveByRecentUser'
 
 const PostCard: React.FC<{
   post: Post
@@ -33,7 +34,10 @@ const PostCard: React.FC<{
   const [isLiked, setIsLiked] = useState(
     user != null && isLikeByRecentUser(user.id, post)
   )
-  const isBookmarked = true
+  const [isSaved, setIsSaved] = useState<boolean>(
+    user != null && isSaevByRecentUser(user, post.id)
+  )
+  // const isSaved = false
   const navigate = useNavigate()
   const handleClick = () => {
     navigate(`/post/${post.id}`)
@@ -49,11 +53,21 @@ const PostCard: React.FC<{
   const handleSelectProfile = (id: string) => {
     navigate(`/profile/${id}`)
   }
+
+  const handleSave = () => {
+    if (user == null) {
+      navigate(`/login`)
+    } else {
+      savePost(post.id)
+      setIsSaved(!isSaved)
+    }
+  }
   return (
     <Card>
       <CardHeader
         avatar={
           <Avatar
+            src={post.user.image}
             sx={{
               bgcolor: red[500],
               cursor: 'pointer',
@@ -62,9 +76,7 @@ const PostCard: React.FC<{
             }}
             aria-label='recipe'
             onClick={() => handleSelectProfile(post.user.id)}
-          >
-            {post.user.lastName.charAt(0)}
-          </Avatar>
+          />
         }
         title={
           <Box sx={{ display: 'flex', gap: '10px' }}>
@@ -87,12 +99,24 @@ const PostCard: React.FC<{
         }
       />
       <Box sx={{ cursor: 'pointer' }}>
-        <CardMedia
-          component='img'
-          image={post.image ? post.image : post.video}
-          alt='post media'
-          onClick={handleClick}
-        />
+        {post.image && (
+          <CardMedia
+            component='img'
+            image={post.image}
+            alt='post media'
+            onClick={handleClick}
+            sx={{ maxHeight: '500px', objectFit: 'contain' }}
+          />
+        )}
+        {post.video && (
+          <CardMedia
+            component='video'
+            controls
+            src={post.video}
+            onClick={handleClick}
+            sx={{ maxHeight: '500px', objectFit: 'contain' }}
+          />
+        )}
         <CardContent>
           <MultilineTextDisplay text={post.caption} />
         </CardContent>
@@ -109,8 +133,8 @@ const PostCard: React.FC<{
             </IconButton>
           </Box>
           <Box>
-            <IconButton aria-label='save'>
-              {isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+            <IconButton aria-label='save' onClick={handleSave}>
+              {!isSaved ? <BookmarkBorderIcon /> : <BookmarkIcon />}
             </IconButton>
           </Box>
         </CardActions>

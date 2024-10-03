@@ -14,10 +14,10 @@ import { useContext, useEffect, useState } from 'react'
 import PostCard from '../Post/PostCard'
 import CreatePostModal from '../CreatePost/CreatePostModal'
 import { Post } from '../../interface/PostInterface'
-import { getAllPost } from '../../api/publicPostApi'
+import { getAllPost } from '../../api/publicApi/publicPostApi'
 import { UserContext, UserContextType } from '../../context/userContext'
 
-const story: number[] = [1, 2, 3, 4, 5, 6, 7]
+const story: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 const MiddlePart = () => {
   const [listPost, setListPost] = useState<Post[]>([])
@@ -32,6 +32,7 @@ const MiddlePart = () => {
   }
 
   const { user }: UserContextType = useContext(UserContext) as UserContextType
+
   useEffect(() => {
     getAllPost().then((data) => {
       if (data) {
@@ -43,24 +44,31 @@ const MiddlePart = () => {
   }, [])
 
   return (
-    <Box sx={{ paddingX: 5 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: 2,
-          borderRadius: 1,
-        }}
-      >
+    <Box sx={{ paddingX: 5, width: '100%' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar sx={{ width: '3rem', height: '3rem', marginRight: 1 }}>
           <AddIcon sx={{ fontSize: '2rem' }} />
         </Avatar>
-        {story.map((index) => (
-          <StoryCircle
-            source='https://i.pinimg.com/564x/d3/87/36/d387361940647d0b35cb2ec8ac70a2aa.jpg'
-            key={index}
-          />
-        ))}
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            padding: 2,
+            overflowX: 'scroll',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+          }}
+        >
+          {story.map((index) => (
+            <Box sx={{ marginX: '10px' }} key={index}>
+              <StoryCircle source='https://i.pinimg.com/564x/bc/b9/ca/bcb9ca016b5aa06ae082a46441d637b3.jpg' />
+            </Box>
+          ))}
+        </Box>
       </Box>
       {user != null && (
         <Box>
@@ -85,18 +93,36 @@ const MiddlePart = () => {
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: 2,
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+                gap: 4,
+                marginY: 1,
               }}
             >
-              <IconButton color='primary' onClick={handleOpenCreatePostModal}>
-                <AddPhotoAlternateIcon />
-              </IconButton>
-              <span>Media</span>
-              <IconButton color='primary' onClick={handleOpenCreatePostModal}>
-                <VideocamIcon />
-              </IconButton>
-              <span>Media</span>
+              <Box
+                onClick={handleOpenCreatePostModal}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <IconButton color='primary'>
+                  <AddPhotoAlternateIcon />
+                </IconButton>
+                <span>Media</span>
+              </Box>
+              <Box
+                onClick={handleOpenCreatePostModal}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <IconButton color='primary'>
+                  <VideocamIcon />
+                </IconButton>
+                <span>Media</span>
+              </Box>
             </Box>
           </Box>
           <Divider />

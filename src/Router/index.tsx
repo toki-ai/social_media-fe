@@ -7,6 +7,8 @@ import Authentication from '../pages/Authentication/Authentication'
 import AppLayout from '../layout/AppLayout'
 import ErrorPage from '../pages/ErrorPage'
 import PostDetail from '../pages/PostDetail/PostDetail'
+import ReelsPage from '../pages/ReelsPage/ReelsPage'
+import CreateReels from '../pages/CreateReels/CreateReels'
 
 const publicRoutes = [
   { path: '/login', element: <Authentication /> },
@@ -22,6 +24,8 @@ const router = createBrowserRouter([
       { path: '/', element: <Homepage /> },
       { path: '/post/:id', element: <PostDetail /> },
       { path: '/profile/:id', element: <Profile /> },
+      { path: '/reels', element: <ReelsPage /> },
+      { path: '/reels/create', element: <CreateReels /> },
       {
         path: '/profile',
         element: (

@@ -12,6 +12,7 @@ import {
   Backdrop,
   CircularProgress,
   Avatar,
+  useTheme,
 } from '@mui/material'
 import { UserProfile, UserUpdate } from '../../interface/UserInterface'
 import { updateUserProfile } from '../../api/userApi'
@@ -33,8 +34,10 @@ const EditProfileModal = ({
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('hi')
     const file = e.target.files?.[0]
     if (file) {
+      console.log('hi')
       setIsLoading(true)
       const uploadedImageUrl = await uploadMedia(file, 'image')
       if (uploadedImageUrl) {
@@ -61,6 +64,8 @@ const EditProfileModal = ({
     handleClose()
     window.location.reload()
   }
+
+  const theme = useTheme()
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -112,12 +117,22 @@ const EditProfileModal = ({
               style={{
                 display: 'none',
               }}
-              onChange={handleImageChange}
+              onChange={(e) => {
+                handleImageChange(e)
+              }}
             />
             <label htmlFor='image-input'>
-              <Button variant='outlined' size='small'>
+              <Box
+                sx={{
+                  color: theme.palette.primary.main,
+                  border: `1px solid ${theme.palette.primary.main}`,
+                  padding: '5px 10px',
+                  borderRadius: '20px',
+                  margin: '5px',
+                }}
+              >
                 Change Avatar
-              </Button>
+              </Box>
             </label>
           </Box>
         </Box>

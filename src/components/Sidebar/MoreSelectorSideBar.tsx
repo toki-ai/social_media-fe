@@ -12,6 +12,7 @@ const MoreSelectorSideBar: React.FC<{ isFull: boolean }> = ({ isFull }) => {
     throw new Error('UserContext must be used within a UserProvider')
   }
   const { setUser } = context
+  const path = window.location.pathname
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -25,6 +26,9 @@ const MoreSelectorSideBar: React.FC<{ isFull: boolean }> = ({ isFull }) => {
     localStorage.clear()
     setUser(null)
     handleClose()
+    if (!(path === '/' || path === '/reels')) {
+      window.location.reload()
+    }
   }
 
   const theme = useTheme()

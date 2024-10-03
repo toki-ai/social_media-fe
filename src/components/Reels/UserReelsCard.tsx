@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box } from '@mui/material'
+import { Box, Card, CardMedia } from '@mui/material'
 
 interface UserReelsCardProps {
   src: string
@@ -7,11 +7,24 @@ interface UserReelsCardProps {
 
 const UserReelsCard: React.FC<UserReelsCardProps> = ({ src }) => {
   return (
-    <Box className='w-full aspect-[2/3]' display='flex'>
-      <video controls className='w-full h-full object-cover'>
-        <source src={src} type='video/mp4' />
-        Your browser does not support the video tag.
-      </video>
+    <Box
+      sx={{
+        width: '100%',
+        aspectRatio: '2 / 3',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+      }}
+    >
+      <Card sx={{ height: '100%', width: '100%' }}>
+        <CardMedia
+          component='video'
+          controls
+          src={src}
+          sx={{ height: '100%', width: '100%', objectFit: 'cover' }}
+        />
+      </Card>
     </Box>
   )
 }

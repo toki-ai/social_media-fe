@@ -70,6 +70,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
       setVideo('')
       setIsLoading(false)
       handleClose()
+      window.location.reload()
     }
   }
 

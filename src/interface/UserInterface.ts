@@ -20,7 +20,7 @@ export interface UserProfile {
   image: string
   following: string[]
   followers: string[]
-  saved: Post[]
+  saved: string[]
 }
 
 export interface UserUpdate {
