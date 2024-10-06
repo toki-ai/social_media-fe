@@ -14,7 +14,7 @@ import { red } from '@mui/material/colors'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
-import SendIcon from '@mui/icons-material/Send'
+import InsertLinkIcon from '@mui/icons-material/InsertLink'
 import BookmarkIcon from '@mui/icons-material/Bookmark'
 import ForumIcon from '@mui/icons-material/Forum'
 import React, { useState } from 'react'
@@ -37,7 +37,6 @@ const PostCard: React.FC<{
   const [isSaved, setIsSaved] = useState<boolean>(
     user != null && isSaevByRecentUser(user, post.id)
   )
-  // const isSaved = false
   const navigate = useNavigate()
   const handleClick = () => {
     navigate(`/post/${post.id}`)
@@ -121,15 +120,36 @@ const PostCard: React.FC<{
           <MultilineTextDisplay text={post.caption} />
         </CardContent>
         <CardActions disableSpacing sx={{ justifyContent: 'space-between' }}>
-          <Box>
-            <IconButton aria-label='add to favorites' onClick={handleLikePost}>
-              {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-            </IconButton>
+          <Box display='flex'>
+            <Box
+              display='flex'
+              alignItems='center'
+              sx={{ paddingRight: '20px' }}
+            >
+              <IconButton
+                aria-label='add to favorites'
+                onClick={handleLikePost}
+              >
+                {isLiked ? (
+                  <FavoriteIcon sx={{ color: 'red' }} />
+                ) : (
+                  <FavoriteBorderIcon />
+                )}
+              </IconButton>
+              <Typography variant='body2'>{post.liked.length}</Typography>
+            </Box>
+            <Box
+              display='flex'
+              alignItems='center'
+              sx={{ paddingRight: '20px' }}
+            >
+              <IconButton aria-label='comment' onClick={handleClick}>
+                <ForumIcon />
+              </IconButton>
+              <Typography variant='body2'>{post.comments.length}</Typography>
+            </Box>
             <IconButton aria-label='share'>
-              <SendIcon />
-            </IconButton>
-            <IconButton aria-label='comment' onClick={handleClick}>
-              <ForumIcon />
+              <InsertLinkIcon />
             </IconButton>
           </Box>
           <Box>

@@ -27,9 +27,7 @@ export const likeComment = async (
   commentId: string
 ): Promise<Comment | null> => {
   try {
-    const response = await apiCaller.post<Comment>(
-      `/comments/like/${commentId}`
-    )
+    const response = await apiCaller.put<Comment>(`/comments/like/${commentId}`)
     if (response) {
       const data: Comment = response
       return data
