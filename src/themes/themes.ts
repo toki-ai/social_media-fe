@@ -44,7 +44,7 @@ export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#90caf9',
+      main: '#0f9bf7',
     },
     secondary: {
       main: '#f48fb1',
@@ -58,6 +58,7 @@ export const darkTheme = createTheme({
     },
     grey: {
       500: '#747474',
+      400: '#4e4f50',
     },
     action: {
       hover: '#262626',

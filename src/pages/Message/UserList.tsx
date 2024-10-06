@@ -64,29 +64,26 @@ const UserList: React.FC<UserListProps> = ({ setCurrentChat, currentChat }) => {
       <Grid item lg={10.5}>
         <Box
           sx={{
-            borderRight: '1px solid #ddd',
             display: 'flex',
             flexDirection: 'column',
           }}
         >
           <Box
             sx={{
-              p: 2,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              p: 3,
             }}
           >
-            <Typography variant='h6' sx={{ ml: 2 }}>
+            <Typography variant='h6'>
               {'@' +
                 user?.firstName.toLocaleLowerCase() +
                 '_' +
                 user?.lastName.toLocaleLowerCase()}
             </Typography>
+            <Box>
+              <SearchUser onUserSelect={handleUserSelect} style='standard' />
+            </Box>
           </Box>
-          <Divider />
-          <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
-            <SearchUser onUserSelect={handleUserSelect} />
+          <Box sx={{ flexGrow: 1, overflowY: 'auto', paddingLeft: 1 }}>
             <Box>
               {chatContextValue?.chats.map((chat: Chat) => {
                 if (user) {

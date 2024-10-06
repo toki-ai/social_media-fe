@@ -5,11 +5,11 @@ const baseURL = process.env.REACT_APP_BASE_API_URL
 
 export const searchUser = async (
   query: string
-): Promise<UserProfile | null> => {
+): Promise<UserProfile[] | null> => {
   try {
     const response = await axios.get(`${baseURL}/users/search?query=${query}`)
     if (response) {
-      const data: UserProfile = response.data
+      const data: UserProfile[] = response.data
       return data
     }
   } catch (error: any) {

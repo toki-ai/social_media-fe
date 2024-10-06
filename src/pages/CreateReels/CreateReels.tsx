@@ -8,6 +8,7 @@ import {
   CardMedia,
   CircularProgress,
   TextField,
+  Typography,
   useTheme,
 } from '@mui/material'
 import QueueIcon from '@mui/icons-material/Queue'
@@ -50,7 +51,7 @@ const CreateReels = () => {
   const navigate = useNavigate()
 
   const handleSubmit = () => {
-    setSubmissionError('') // Reset the submission error message
+    setSubmissionError('')
 
     if (video.length === 0) {
       setSubmissionError('Please upload a video.')
@@ -118,19 +119,14 @@ const CreateReels = () => {
                 height: '100%',
               }}
             >
-              <QueueIcon
-                sx={{
-                  width: '40px',
-                  height: '40px',
-                }}
-              />
+              <Typography fontStyle='italic'>Upload your reels now</Typography>
             </Box>
           )}
         </Box>
         <Box sx={{ width: '300px' }}>
           <Box>
             <TextField
-              label='Type Reels Description'
+              label='What reels is this about ?'
               value={value}
               onChange={handleChange}
               variant='outlined'
@@ -140,6 +136,12 @@ const CreateReels = () => {
               error={!!errorMessage}
               helperText={errorMessage}
             />
+          </Box>
+          <Box
+            display='flex'
+            justifyContent='space-between'
+            sx={{ marginY: '10px' }}
+          >
             <input
               accept='video/*'
               type='file'
@@ -160,17 +162,23 @@ const CreateReels = () => {
                 Upload Video
               </Box>
             </label>
+            <Box
+              onClick={handleSubmit}
+              sx={{
+                bgcolor: theme.palette.primary.main,
+                color: '#ffff',
+                padding: '5px 10px',
+                borderRadius: '20px',
+                margin: '5px',
+                textTransform: 'none',
+              }}
+            >
+              Post Yours
+            </Box>
           </Box>
-          <Box>
-            {submissionError && (
-              <Box sx={{ color: 'red', margin: '10px 0' }}>
-                {submissionError}
-              </Box>
-            )}
-            <Button variant='contained' color='primary' onClick={handleSubmit}>
-              Post
-            </Button>
-          </Box>
+          {submissionError && (
+            <Box sx={{ color: 'red', margin: '10px 0' }}>{submissionError}</Box>
+          )}
         </Box>
       </Box>
       <Backdrop

@@ -9,7 +9,7 @@ const UserChatCard: React.FC<{
   isCurrentChat: boolean
 }> = ({ user, isCurrentChat }) => {
   const theme = useTheme()
-  
+
   return (
     <Box
       sx={{
@@ -18,10 +18,10 @@ const UserChatCard: React.FC<{
         alignItems: 'center',
         cursor: 'pointer',
         '&:hover': { backgroundColor: theme.palette.action.hover },
-        bgcolor: isCurrentChat ? 'gray' : '',
+        bgcolor: isCurrentChat ? theme.palette.action.hover : '',
       }}
     >
-      <Avatar />
+      <Avatar src={user.image} />
       <Typography variant='body1' sx={{ ml: 2 }}>
         {user.firstName + ' ' + user.lastName}
       </Typography>

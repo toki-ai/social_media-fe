@@ -33,7 +33,10 @@ const HomeRight: React.FC = () => {
 
   return (
     <Box>
-      <SearchUser onUserSelect={(user) => navigate(`/profile/${user.id}`)} />
+      <SearchUser
+        onUserSelect={(user) => navigate(`/profile/${user.id}`)}
+        style='outlined'
+      />
       <Box sx={{ paddingY: 3 }}>
         <Box
           sx={{

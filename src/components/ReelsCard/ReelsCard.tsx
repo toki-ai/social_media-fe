@@ -2,6 +2,7 @@ import { Box, Avatar, Typography, Card, CardMedia } from '@mui/material'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { useRef, useState } from 'react'
 import { Reels } from '../../interface/ReelsInterface'
+import { useNavigate } from 'react-router-dom'
 
 const ReelsCard: React.FC<{ reels: Reels }> = ({ reels }) => {
   const [isFullContent, setIsFullContent] = useState<boolean>(false)
@@ -10,6 +11,11 @@ const ReelsCard: React.FC<{ reels: Reels }> = ({ reels }) => {
   }
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const navigate = useNavigate()
+
+  const handleRedirectProfile = (id: string) => {
+    navigate(`/profile/${id}`)
+  }
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -24,8 +30,8 @@ const ReelsCard: React.FC<{ reels: Reels }> = ({ reels }) => {
 
   const handleLoadStart = () => {
     if (videoRef.current) {
-      videoRef.current.play() // Play video when it starts loading
-      setIsPlaying(true) // Set isPlaying to true
+      videoRef.current.play()
+      setIsPlaying(true)
     }
   }
 
@@ -45,11 +51,10 @@ const ReelsCard: React.FC<{ reels: Reels }> = ({ reels }) => {
           component='video'
           src={reels.videoUrl}
           sx={{ height: '100%', width: '100%', objectFit: 'cover' }}
-          ref={videoRef} // Attach ref to the video element
-          onClick={togglePlay} // Allow video to be toggled by clicking on it
-          onLoadStart={handleLoadStart} // Start playing when the video starts loading
+          ref={videoRef}
+          onClick={togglePlay}
+          onLoadStart={handleLoadStart}
         />
-        {/* Custom Play Button */}
         {!isPlaying && (
           <Box
             onClick={togglePlay}
@@ -58,11 +63,11 @@ const ReelsCard: React.FC<{ reels: Reels }> = ({ reels }) => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              bgcolor: 'rgba(0, 0, 0, 0.5)', // Background for better visibility
+              bgcolor: 'rgba(0, 0, 0, 0.5)',
               borderRadius: '50%',
               p: 1,
               cursor: 'pointer',
-              zIndex: 10, // Ensure it's above the video
+              zIndex: 10,
             }}
           >
             <PlayArrowIcon sx={{ color: 'white', fontSize: 50 }} />
@@ -83,9 +88,17 @@ const ReelsCard: React.FC<{ reels: Reels }> = ({ reels }) => {
             <Avatar
               alt='Profile'
               src={reels.user.image}
-              sx={{ marginRight: '10px' }}
+              sx={{ marginRight: '10px', cursor: 'pointer' }}
+              onClick={() => handleRedirectProfile(reels.user.id)}
             />
-            <Typography variant='subtitle2'>
+            <Typography
+              variant='subtitle2'
+              sx={{
+                cursor: 'pointer',
+                '&:hover': { textDecoration: 'underline' },
+              }}
+              onClick={() => handleRedirectProfile(reels.user.id)}
+            >
               {reels.user.firstName + reels.user.lastName}
             </Typography>
           </Box>

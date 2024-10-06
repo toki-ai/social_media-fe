@@ -2,10 +2,12 @@ import { Favorite, Send } from '@mui/icons-material'
 import {
   Avatar,
   Box,
+  Divider,
   IconButton,
   InputBase,
   Paper,
   Typography,
+  useTheme,
 } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import { Chat, Message, MessageCreate } from '../../interface/ChatInterface'
@@ -18,6 +20,8 @@ import { createMessage, getMessageByChat } from '../../api/messageApi'
 import MessageItem from '../../components/MessageItem/MessageItem'
 import Stomp from 'stompjs'
 import SockJS from 'sockjs-client'
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
+import { getChatDate } from '../../utils/formatDateTime'
 
 const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
   currentChat,
@@ -27,12 +31,20 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
   const [image, setImage] = useState<string>('')
   const [message, setMessage] = useState<string>('')
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null)
+  const theme = useTheme()
 
   useEffect(() => {
     if (currentChat != null)
       try {
         getMessageByChat(currentChat.id).then((data) => {
-          if (data && Array.isArray(data)) setListMessages(data)
+          if (data && Array.isArray(data)) {
+            const sortedMessages = data.sort(
+              (a: Message, b: Message) =>
+                new Date(a.timeStamps).getTime() -
+                new Date(b.timeStamps).getTime()
+            )
+            setListMessages(sortedMessages)
+          }
         })
       } catch (e) {
         console.log(e)
@@ -120,19 +132,56 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
     }
   }, [stompClient, currentChat])
 
+  const isDifferentDay = (date1: Date, date2: Date) => {
+    return (
+      date1.getFullYear() !== date2.getFullYear() ||
+      date1.getMonth() !== date2.getMonth() ||
+      date1.getDate() !== date2.getDate()
+    )
+  }
+
+  if (!currentChat)
+    return (
+      <Box
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        flexDirection='column'
+        sx={{ height: '100%' }}
+      >
+        <Box
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          flexDirection='column'
+          sx={{
+            border: `3px solid ${theme.palette.grey[300]}`,
+            paddingY: 2,
+            paddingX: 5,
+            borderRadius: 2,
+            marginBottom: 5,
+          }}
+        >
+          <ChatBubbleIcon
+            sx={{ fontSize: '7rem', color: theme.palette.grey[300] }}
+          />
+          <Typography>Starting a chat now</Typography>
+        </Box>
+      </Box>
+    )
+
   return (
-    <Box sx={{ display: 'flex', height: '100vh', bgcolor: '#f0f2f5' }}>
+    <Box sx={{ display: 'flex', height: '100vh' }}>
       <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <Box
           sx={{
             p: 2,
             display: 'flex',
             alignItems: 'center',
-            bgcolor: 'white',
-            borderBottom: '1px solid #ddd',
+            borderBottom: `1px solid ${theme.palette.grey[400]}`,
           }}
         >
-          <Avatar />
+          <Avatar src={resUser?.image} />
           <Typography variant='h6' sx={{ ml: 2 }}>
             {resUser != null
               ? resUser?.firstName + ' ' + resUser?.lastName
@@ -142,9 +191,7 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
         <Box
           sx={{
             flexGrow: 1,
-            p: 2,
             overflowY: 'auto',
-            bgcolor: '#e5ddd5',
           }}
         >
           <Box
@@ -155,19 +202,51 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
             }}
           >
             {listMessages.length > 0 &&
-              listMessages.map((message, index) => (
-                <MessageItem
-                  key={index}
-                  message={message}
-                  isResMessage={resUser?.id === message.sender.id}
-                />
-              ))}
+              listMessages.map((message, index) => {
+                const previousMessage = listMessages[index - 1]
+                const currentMessageDate = new Date(message.timeStamps)
+                const previousMessageDate = previousMessage
+                  ? new Date(previousMessage.timeStamps)
+                  : null
+                return (
+                  <React.Fragment key={index}>
+                    {previousMessageDate &&
+                      isDifferentDay(
+                        currentMessageDate,
+                        previousMessageDate
+                      ) && (
+                        <Typography
+                          variant='caption'
+                          sx={{
+                            width: '100%',
+                            textAlign: 'center',
+                            marginY: '10px',
+                            display: 'block',
+                            color: theme.palette.grey[600],
+                          }}
+                        >
+                          {getChatDate(message.timeStamps)}
+                        </Typography>
+                      )}
+                    <MessageItem
+                      message={message}
+                      isResMessage={resUser?.id === message.sender.id}
+                    />
+                  </React.Fragment>
+                )
+              })}
           </Box>
         </Box>
-        <Box sx={{ p: 2, bgcolor: 'white', borderTop: '1px solid #ddd' }}>
-          <Paper
+        <Box sx={{ p: 2 }}>
+          <Box
             component='form'
-            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
+            sx={{
+              p: '2px 4px',
+              display: 'flex',
+              alignItems: 'end',
+              border: `1px solid ${theme.palette.text.primary}`,
+              borderRadius: '20px',
+            }}
             onSubmit={handleSubmit}
           >
             <Box sx={{ ml: 1, flex: 1 }}>
@@ -176,14 +255,17 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
                   component='img'
                   sx={{
                     boxShadow: 3,
-                    width: '200px',
+                    width: '60px',
+                    height: '60px',
+                    objectFit: 'cover',
+                    borderRadius: '10px',
                   }}
                   alt='Sample Image'
                   src={image}
                 />
               )}
               <InputBase
-                sx={{ width: '100%' }}
+                sx={{ width: '100%', marginBottom: '5px' }}
                 placeholder='Type a message...'
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
@@ -198,13 +280,18 @@ const ChatWindow: React.FC<{ currentChat: Chat | null }> = ({
                 onChange={handleImageChange}
               />
               <label htmlFor='image-input'>
-                <PhotoIcon />
+                <PhotoIcon
+                  sx={{
+                    color: theme.palette.text.primary,
+                    marginBottom: '3px',
+                  }}
+                />
               </label>
             </Box>
             <IconButton type='submit' sx={{ p: '10px' }}>
-              <Send />
+              <Send sx={{ color: theme.palette.text.primary }} />
             </IconButton>
-          </Paper>
+          </Box>
         </Box>
       </Box>
     </Box>

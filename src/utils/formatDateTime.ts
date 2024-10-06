@@ -15,3 +15,31 @@ export const formatDateTime = (dateString: string) => {
     return `${diffInDays}d`
   }
 }
+
+export const getChatHour = (dateString: string) => {
+  const date = new Date(dateString)
+  if (date.getMinutes() < 10) return date.getHours() + ':0' + date.getMinutes()
+  return date.getHours() + ':' + date.getMinutes()
+}
+
+export const getChatDate = (dateString: string) => {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]
+
+  const date = new Date(dateString)
+  return (
+    date.getDate() + ' ' + months[date.getMonth()] + ', ' + date.getFullYear()
+  )
+}

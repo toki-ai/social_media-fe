@@ -16,12 +16,13 @@ import CreatePostModal from '../CreatePost/CreatePostModal'
 import { Post } from '../../interface/PostInterface'
 import { getAllPost } from '../../api/publicApi/publicPostApi'
 import { UserContext, UserContextType } from '../../context/userContext'
-
-const story: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+import { UserProfile } from '../../interface/UserInterface'
+import { getAllUser } from '../../api/publicApi/publicUserApi'
 
 const MiddlePart = () => {
   const [listPost, setListPost] = useState<Post[]>([])
   const [open, setOpen] = useState<boolean>(false)
+  const [listUser, setListUser] = useState<UserProfile[]>([])
 
   const handleOpenCreatePostModal = () => {
     setOpen(true)
@@ -41,12 +42,19 @@ const MiddlePart = () => {
         console.log('Failed to get post')
       }
     })
+    getAllUser().then((data) => {
+      if (data) {
+        setListUser(data)
+      }
+    })
   }, [])
 
   return (
     <Box sx={{ paddingX: 5, width: '100%' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar sx={{ width: '3rem', height: '3rem', marginRight: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'start' }}>
+        <Avatar
+          sx={{ width: '3rem', height: '3rem', marginLeft: 1, marginRight: 1 }}
+        >
           <AddIcon sx={{ fontSize: '2rem' }} />
         </Avatar>
         <Box
@@ -54,7 +62,6 @@ const MiddlePart = () => {
             width: '100%',
             display: 'flex',
             alignItems: 'center',
-            padding: 2,
             overflowX: 'scroll',
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
@@ -63,9 +70,9 @@ const MiddlePart = () => {
             },
           }}
         >
-          {story.map((index) => (
+          {listUser.map((user, index) => (
             <Box sx={{ marginX: '10px' }} key={index}>
-              <StoryCircle source='https://i.pinimg.com/564x/bc/b9/ca/bcb9ca016b5aa06ae082a46441d637b3.jpg' />
+              <StoryCircle user={user} />
             </Box>
           ))}
         </Box>

@@ -15,9 +15,10 @@ import { searchUser } from '../../api/publicApi/publicUserApi'
 
 interface SearchBarProps {
   onUserSelect: (user: UserProfile) => void
+  style: 'filled' | 'outlined' | 'standard'
 }
 
-const SearchUser: React.FC<SearchBarProps> = ({ onUserSelect }) => {
+const SearchUser: React.FC<SearchBarProps> = ({ onUserSelect, style }) => {
   const [searchValue, setSearchValue] = useState<string>('')
   const [userList, setUserList] = useState<UserProfile[]>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -54,7 +55,7 @@ const SearchUser: React.FC<SearchBarProps> = ({ onUserSelect }) => {
     <>
       <TextField
         label='Search user'
-        variant='outlined'
+        variant={style}
         value={searchValue}
         onChange={handleInputChange}
         InputProps={{

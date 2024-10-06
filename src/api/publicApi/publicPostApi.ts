@@ -51,3 +51,19 @@ export const getPostByUser = async (userId: string): Promise<Post[] | null> => {
   }
   return null
 }
+
+export const searchPost = async (query: string): Promise<Post[] | null> => {
+  try {
+    const response = await axios.get(`${baseURL}/posts/search?query=${query}`)
+    if (response) {
+      const data: Post[] = response.data
+      return data
+    }
+  } catch (error: any) {
+    console.error(
+      'Error: ',
+      error.response ? error.response.data : error.message
+    )
+  }
+  return null
+}
