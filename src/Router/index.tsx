@@ -10,6 +10,7 @@ import PostDetail from '../pages/PostDetail/PostDetail'
 import ReelsPage from '../pages/ReelsPage/ReelsPage'
 import CreateReels from '../pages/CreateReels/CreateReels'
 import SearchPost from '../pages/SearchPost/SearchPost'
+import Notification from '../pages/Notification/Notification'
 
 const publicRoutes = [
   { path: '/login', element: <Authentication /> },
@@ -41,6 +42,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Message />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/notifications',
+        element: (
+          <ProtectedRoute>
+            <Notification />
           </ProtectedRoute>
         ),
       },
