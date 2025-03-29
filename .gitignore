@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 .env 
+
+keystore.p12
+privkey.pem
+fullchain.pem
+nginx.conf
