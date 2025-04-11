@@ -30,19 +30,17 @@ const EditProfileModal = ({
 }) => {
   const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
+  const [bio, setBio] = useState(user.bio || '')
   const [image, setImage] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('hi')
     const file = e.target.files?.[0]
     if (file) {
-      console.log('hi')
       setIsLoading(true)
       const uploadedImageUrl = await uploadMedia(file, 'image')
       if (uploadedImageUrl) {
         setImage(uploadedImageUrl)
-        console.log('Image uploaded:', uploadedImageUrl)
       }
       setIsLoading(false)
     }
@@ -58,7 +56,8 @@ const EditProfileModal = ({
     const data: UserUpdate = {
       firstName: firstName,
       lastName: lastName,
-      image: image,
+      image: image || user.image,
+      bio: bio,
     }
     updateUserProfile(data)
     handleClose()
@@ -149,6 +148,16 @@ const EditProfileModal = ({
           fullWidth
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label='Bio'
+          fullWidth
+          multiline
+          rows={4}
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+          placeholder='Write something about yourself...'
           sx={{ mb: 2 }}
         />
         <Box display='flex' justifyContent='flex-end'>

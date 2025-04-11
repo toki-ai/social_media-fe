@@ -5,6 +5,7 @@ import {
   Divider,
   IconButton,
   InputBase,
+  Typography,
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
@@ -49,6 +50,10 @@ const MiddlePart = () => {
     })
   }, [])
 
+  const handleStoryClick = () => {
+    alert('Coming soon! 🚀')
+  }
+
   return (
     <Box sx={{ paddingX: 5, width: '100%' }}>
       <Box sx={{ display: 'flex', alignItems: 'start' }}>
@@ -71,7 +76,17 @@ const MiddlePart = () => {
           }}
         >
           {listUser.map((user, index) => (
-            <Box sx={{ marginX: '10px' }} key={index}>
+            <Box
+              sx={{
+                marginX: '10px',
+                cursor: 'pointer',
+                '&:hover': {
+                  opacity: 0.8,
+                },
+              }}
+              key={index}
+              onClick={handleStoryClick}
+            >
               <StoryCircle user={user} />
             </Box>
           ))}
@@ -81,7 +96,7 @@ const MiddlePart = () => {
         <Box>
           <Divider sx={{ marginTop: 2 }} />
           <Box sx={{ paddingTop: 3, cursor: 'pointer' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
               <Avatar sx={{ margin: '0 10px' }} src={user.image} />
               <InputBase
                 readOnly
@@ -96,40 +111,6 @@ const MiddlePart = () => {
                 }}
                 onClick={handleOpenCreatePostModal}
               />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                alignItems: 'center',
-                gap: 4,
-                marginY: 1,
-              }}
-            >
-              <Box
-                onClick={handleOpenCreatePostModal}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <IconButton color='primary'>
-                  <AddPhotoAlternateIcon />
-                </IconButton>
-                <span>Media</span>
-              </Box>
-              <Box
-                onClick={handleOpenCreatePostModal}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <IconButton color='primary'>
-                  <VideocamIcon />
-                </IconButton>
-                <span>Media</span>
-              </Box>
             </Box>
           </Box>
           <Divider />

@@ -8,19 +8,22 @@ import {
   Grid,
   InputBase,
   Typography,
+  IconButton,
 } from '@mui/material'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Comment, CommentCreate, Post } from '../../interface/PostInterface'
 import { UserProfile } from '../../interface/UserInterface'
 import { getUserProfile } from '../../api/userApi'
 import { getPostById } from '../../api/publicApi/publicPostApi'
 import { UserContext } from '../../context/userContext'
 import SendIcon from '@mui/icons-material/Send'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { createComment } from '../../api/commentApi'
 import CommentItem from '../../components/CommentItem/CommentItem'
 
 const PostDetail = () => {
   const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const [post, setPost] = React.useState<Post | null>(null)
   const [comments, setComments] = useState<Comment[]>([])
   const [value, setValue] = useState<string>('')
@@ -75,6 +78,16 @@ const PostDetail = () => {
 
   return (
     <Box sx={{ paddingX: 5 }}>
+      <Box sx={{ mb: 2 }}>
+        <IconButton
+          onClick={() => navigate('/')}
+          sx={{
+            '&:hover': { bgcolor: 'action.hover' },
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Box>
       <Grid
         container
         sx={{

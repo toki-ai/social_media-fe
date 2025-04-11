@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 const HomeRight: React.FC = () => {
   const theme = useTheme()
   const [userList, setUserList] = useState<UserProfile[] | null>(null)
+  const [showAll, setShowAll] = useState(false)
   const currentUser = useContext(UserContext)
   const navigate = useNavigate()
 
@@ -24,25 +25,34 @@ const HomeRight: React.FC = () => {
               !user.followers.includes(currentUser.user.id)
             )
           })
-          const firstFiveUsers = filteredUsers.slice(0, 5)
-          setUserList(firstFiveUsers)
+          setUserList(filteredUsers)
         }
       })
     }
   }, [currentUser])
+
+  const displayedUsers = userList
+    ? showAll
+      ? userList
+      : userList.slice(0, 5)
+    : null
+
+  const handleSeeAll = () => {
+    setShowAll(!showAll)
+  }
 
   return (
     <Box>
       <SearchUser
         onUserSelect={(user) => navigate(`/profile/${user.id}`)}
         style='outlined'
+        placeholder='Search users'
       />
       <Box sx={{ paddingY: 3 }}>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-
             alignItems: 'center',
           }}
         >
@@ -58,13 +68,28 @@ const HomeRight: React.FC = () => {
           </Typography>
           <Typography
             variant='caption'
-            sx={{ fontWeight: 'bold', fontSize: '13px', paddingRight: '5px' }}
+            sx={{
+              fontWeight: 'bold',
+              fontSize: '13px',
+              paddingRight: '5px',
+              cursor: 'pointer',
+              '&:hover': {
+                opacity: 0.7,
+              },
+            }}
+            onClick={handleSeeAll}
           >
-            See all
+            {showAll ? 'See less' : 'See all'}
           </Typography>
         </Box>
-        <Box sx={{ marginTop: 1 }}>
-          {userList?.map((user, index) => (
+        <Box
+          sx={{
+            marginTop: 1,
+            maxHeight: showAll ? '400px' : 'auto',
+            overflowY: showAll ? 'auto' : 'visible',
+          }}
+        >
+          {displayedUsers?.map((user, index) => (
             <SuggestUserCard user={user} key={index} />
           ))}
         </Box>

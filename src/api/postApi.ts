@@ -17,6 +17,25 @@ export const createPost = async (post: PostCreate): Promise<Post | null> => {
   return null
 }
 
+export const updatePost = async (
+  postId: string,
+  post: PostCreate
+): Promise<Post | null> => {
+  try {
+    const response = await apiCaller.put<Post>(`/posts/${postId}`, post)
+    if (response) {
+      const data: Post = response
+      return data
+    }
+  } catch (error: any) {
+    console.error(
+      'Error: ',
+      error.response ? error.response.data : error.message
+    )
+  }
+  return null
+}
+
 export const likePost = async (postId: string): Promise<Post | null> => {
   try {
     const response = await apiCaller.put<Post>(`/posts/${postId}/like`)
@@ -47,4 +66,19 @@ export const savePost = async (postId: string): Promise<Post | null> => {
     )
   }
   return null
+}
+
+export const deletePost = async (postId: string): Promise<boolean> => {
+  try {
+    const response = await apiCaller.delete(`/posts/${postId}/delete`)
+    if (response) {
+      return true
+    }
+  } catch (error: any) {
+    console.error(
+      'Error: ',
+      error.response ? error.response.data : error.message
+    )
+  }
+  return false
 }

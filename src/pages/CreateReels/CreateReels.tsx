@@ -21,19 +21,11 @@ const CreateReels = () => {
   const [video, setVideo] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [value, setValue] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
   const [submissionError, setSubmissionError] = useState('')
-  const maxLength = 100
   const theme = useTheme()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value
-    if (newValue.length > maxLength) {
-      setErrorMessage(`Vượt quá ${maxLength} ký tự!`)
-    } else {
-      setValue(newValue)
-      setErrorMessage('')
-    }
+    setValue(event.target.value)
   }
 
   const handleVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,20 +115,17 @@ const CreateReels = () => {
             </Box>
           )}
         </Box>
-        <Box sx={{ width: '300px' }}>
-          <Box>
-            <TextField
-              label='What reels is this about ?'
-              value={value}
-              onChange={handleChange}
-              variant='outlined'
-              fullWidth
-              multiline
-              rows={4}
-              error={!!errorMessage}
-              helperText={errorMessage}
-            />
-          </Box>
+        <Box sx={{ width: '400px' }}>
+          <TextField
+            label='What reels is this about ?'
+            value={value}
+            onChange={handleChange}
+            variant='outlined'
+            fullWidth
+            multiline
+            rows={6}
+            sx={{ width: '100%' }}
+          />
           <Box
             display='flex'
             justifyContent='space-between'

@@ -1,4 +1,4 @@
-import { Button, TextField, Typography, Box } from '@mui/material'
+import { Button, TextField, Typography, Box, Alert } from '@mui/material'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useNavigate, useLocation } from 'react-router-dom'
@@ -32,6 +32,14 @@ const Login = () => {
 
   return (
     <Box sx={{ maxWidth: 400, margin: 'auto', padding: 2 }}>
+      <Alert severity='info' sx={{ mb: 2 }}>
+        Default user credentials:
+        <br />
+        Email: user@gmail.com
+        <br />
+        Password: user123
+      </Alert>
+
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

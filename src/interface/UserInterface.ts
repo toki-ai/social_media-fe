@@ -21,12 +21,14 @@ export interface UserProfile {
   following: string[]
   followers: string[]
   saved: string[]
+  bio?: string
 }
 
 export interface UserUpdate {
   firstName: string
   lastName: string
   image: string
+  bio?: string
 }
 
 export interface AuthState {

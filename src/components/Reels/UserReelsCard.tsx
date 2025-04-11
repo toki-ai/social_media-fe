@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Box, Card, CardMedia } from '@mui/material'
 
 interface UserReelsCardProps {
@@ -6,6 +6,17 @@ interface UserReelsCardProps {
 }
 
 const UserReelsCard: React.FC<UserReelsCardProps> = ({ src }) => {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    return () => {
+      if (video) {
+        video.pause()
+      }
+    }
+  }, [])
+
   return (
     <Box
       sx={{
@@ -22,6 +33,7 @@ const UserReelsCard: React.FC<UserReelsCardProps> = ({ src }) => {
           component='video'
           controls
           src={src}
+          ref={videoRef}
           sx={{ height: '100%', width: '100%', objectFit: 'cover' }}
         />
       </Card>

@@ -54,3 +54,39 @@ export const getAllUser = async (): Promise<UserProfile[] | null> => {
   }
   return null
 }
+
+export const getFollowersByUserId = async (
+  userId: string
+): Promise<UserProfile[] | null> => {
+  try {
+    const response = await axios.get(`${baseURL}/users/${userId}/followers`)
+    if (response) {
+      const data: UserProfile[] = response.data
+      return data
+    }
+  } catch (error: any) {
+    console.error(
+      'Error: ',
+      error.response ? error.response.data : error.message
+    )
+  }
+  return null
+}
+
+export const getFollowingByUserId = async (
+  userId: string
+): Promise<UserProfile[] | null> => {
+  try {
+    const response = await axios.get(`${baseURL}/users/${userId}/following`)
+    if (response) {
+      const data: UserProfile[] = response.data
+      return data
+    }
+  } catch (error: any) {
+    console.error(
+      'Error: ',
+      error.response ? error.response.data : error.message
+    )
+  }
+  return null
+}

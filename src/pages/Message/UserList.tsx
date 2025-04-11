@@ -79,8 +79,12 @@ const UserList: React.FC<UserListProps> = ({ setCurrentChat, currentChat }) => {
                 '_' +
                 user?.lastName.toLocaleLowerCase()}
             </Typography>
-            <Box>
-              <SearchUser onUserSelect={handleUserSelect} style='standard' />
+            <Box sx={{ mt: 2 }}>
+              <SearchUser
+                onUserSelect={handleUserSelect}
+                style='outlined'
+                placeholder='Search user to begin a chat'
+              />
             </Box>
           </Box>
           <Box sx={{ flexGrow: 1, overflowY: 'auto', paddingLeft: 1 }}>

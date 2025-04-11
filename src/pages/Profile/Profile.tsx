@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Grid } from '@mui/material'
+import { Box, Tab, Tabs, Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { tabs } from './TabNavigation'
 import UserPostCard from '../../components/Post/UserPostCard'
@@ -13,124 +13,195 @@ import { isYourProfile } from '../../utils/isYourProfile'
 import { getUserById } from '../../api/publicApi/publicUserApi'
 import { getReelsByUser } from '../../api/publicApi/publicReelsApi'
 import { Reels } from '../../interface/ReelsInterface'
-
-const saved: number[] = [1, 2, 3, 4, 5]
+import CircularProgress from '@mui/material/CircularProgress'
 
 const Profile = () => {
-  const { id } = useParams<{ id: string }>()
-  const [value, setValue] = React.useState('posts')
+  const [user, setUser] = useState<UserProfile | null>(null)
+  const [post, setPost] = useState<Post[]>([])
   const [reels, setReels] = useState<Reels[]>([])
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const [value, setValue] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const { userId } = useParams()
+  const isEditMode = isYourProfile(userId || null)
+  const [savePost, setSavePosts] = useState<Post[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+      if (!userId) {
+        // If no userId in params, try to get current user profile
+        try {
+          const currentUser = await getUserProfile()
+          if (currentUser) {
+            setUser(currentUser)
+            console.log('Fetched current user:', currentUser)
+
+            const postData = await getPostByUser(currentUser.id)
+            if (postData) {
+              setPost(postData)
+              console.log('Fetched posts:', postData)
+            }
+
+            const reelsData = await getReelsByUser(currentUser.id)
+            if (reelsData) {
+              setReels(reelsData)
+              console.log('Fetched reels:', reelsData)
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching current user data:', error)
+        }
+      } else {
+        try {
+          const userData = await getUserById(userId)
+          if (userData) {
+            setUser(userData)
+            console.log('Fetched user by ID:', userData)
+
+            const postData = await getPostByUser(userId)
+            if (postData) {
+              setPost(postData)
+              console.log('Fetched posts:', postData)
+            }
+
+            const reelsData = await getReelsByUser(userId)
+            if (reelsData) {
+              setReels(reelsData)
+              console.log('Fetched reels:', reelsData)
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error)
+        }
+      }
+      setLoading(false)
+    }
+
+    fetchData()
+  }, [userId])
+
+  useEffect(() => {
+    const fetchSavedPosts = async () => {
+      if (user?.saved && user.saved.length > 0) {
+        try {
+          const fetchedPosts = await Promise.all(
+            user.saved.map((postId: string) => getPostById(postId))
+          )
+          const validPosts = fetchedPosts.filter(
+            (post): post is Post => post !== null
+          )
+          setSavePosts(validPosts)
+          console.log('Fetched saved posts:', validPosts)
+        } catch (error) {
+          console.error('Error fetching saved posts:', error)
+        }
+      }
+    }
+
+    fetchSavedPosts()
+  }, [user?.saved])
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
 
-  const [post, setPost] = React.useState<Post[]>([])
-  const [user, setUser] = useState<UserProfile | null>(null)
-  const [isEditMode, setIsEditMode] = useState<boolean>(false)
-
-  const getUser = async () => {
-    if (id) {
-      const data = await getUserById(id)
-      if (data) {
-        setUser(data)
-        const isOwner = await isYourProfile(id)
-        setIsEditMode(isOwner)
-      }
-    } else {
-      const token = localStorage.getItem('jwt')
-      if (token) {
-        const data = await getUserProfile()
-        if (data) {
-          setUser(data)
-          setIsEditMode(true)
-        }
-      }
-    }
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
   }
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      await getUser()
-    }
-    fetchUser()
-  }, [id])
-
-  useEffect(() => {
-    if (value === 'posts' && user) {
-      getPostByUser(user.id).then((data) => {
-        if (data) {
-          setPost(data)
-        }
-      })
-    } else if (value === 'reels' && user) {
-      getReelsByUser(user.id).then((data) => {
-        if (data) {
-          setReels(data)
-        }
-      })
-    }
-  }, [value, user])
-
-  const [savePost, setSavePosts] = useState<any[]>([])
-
-  useEffect(() => {
-    if (user?.saved) {
-      Promise.all(user.saved.map((postId: string) => getPostById(postId)))
-        .then((fetchedPosts) => {
-          const validPosts = fetchedPosts.filter((post) => post !== null)
-          setSavePosts(validPosts)
-        })
-        .catch((error) => {
-          console.error('', error)
-        })
-    }
-  }, [user?.saved])
+  if (!user) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <Typography>No user data found</Typography>
+      </Box>
+    )
+  }
 
   return (
-    <Box width='80%'>
-      {user != null && (
-        <ProfileHeader
-          user={user}
-          postNumber={post.length}
-          isEditMode={isEditMode}
-        />
-      )}
-      <Box>
-        <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'lightgrey' }}>
+    <Box
+      sx={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <Box sx={{ width: '100%', maxWidth: '1200px' }}>
+        <ProfileHeader user={user} postCount={post.length} />
+      </Box>
+
+      <Box sx={{ width: '70%', maxWidth: '1200px' }}>
+        <Box>
           <Tabs
             value={value}
             onChange={handleChange}
-            textColor='primary'
-            indicatorColor='primary'
-            aria-label='profile tabs'
-            centered
+            variant='fullWidth'
+            sx={{ mb: 2 }}
           >
-            {tabs.map((tab) => (
-              <Tab key={tab.value} value={tab.value} label={tab.name} />
+            {tabs.map((tab, index) => (
+              <Tab
+                key={index}
+                label={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {index === 0 && (
+                      <Typography variant='body2'>{tab.name}</Typography>
+                    )}
+                    {index !== 0 && tab.name}
+                  </Box>
+                }
+              />
             ))}
           </Tabs>
         </Box>
-        <Box mt={5}>
-          <Grid container spacing={2} justifyContent='left'>
-            {value === 'posts' &&
-              post.map((item: Post, index: number) => (
-                <Grid item xs={4} lg={4} key={index}>
+
+        <Box sx={{ p: 3 }}>
+          {value === 0 && (
+            <Grid container spacing={2}>
+              {post.map((p) => (
+                <Grid item xs={12} sm={6} md={4} key={p.id}>
+                  <UserPostCard post={p} />
+                </Grid>
+              ))}
+            </Grid>
+          )}
+
+          {value === 1 && (
+            <Grid container spacing={2}>
+              {reels.map((r) => (
+                <Grid item xs={12} sm={6} md={4} key={r.id}>
+                  <UserReelsCard src={r.videoUrl} />
+                </Grid>
+              ))}
+            </Grid>
+          )}
+
+          {value === 2 && (
+            <Grid container spacing={2}>
+              {savePost.map((item, index) => (
+                <Grid item xs={12} sm={6} md={4} key={item.id || index}>
                   <UserPostCard post={item} />
                 </Grid>
               ))}
-            {value === 'reels' &&
-              reels.map((item, index: number) => (
-                <Grid item xs={6} sm={4} md={3} key={index}>
-                  <UserReelsCard src={item.videoUrl} />
-                </Grid>
-              ))}
-            {value === 'saved' &&
-              savePost.map((item, index: number) => (
-                <Grid item xs={4} lg={4} key={index}>
-                  <UserPostCard post={item} />
-                </Grid>
-              ))}
-          </Grid>
+            </Grid>
+          )}
         </Box>
       </Box>
     </Box>
